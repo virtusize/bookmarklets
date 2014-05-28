@@ -1,0 +1,41 @@
+<div id="{{id}}" class="panel panel-default panel-virtusize">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {{title}}
+            <a href="#" class="close" data-toggle="panel" data-target="#{{id}}">&times;</a>
+        </h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Button Selector</th>
+                    <th>Language</th>
+                    <th>Region</th>
+                    <th>Store ID</th>
+                    <th>StoreProduct ID</th>
+                    <th>Valid</th>
+                    <th>Open</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each widgets}}
+                <tr>
+                    <td>{{productId}}</td>
+                    <td>{{buttonSelector}}</td>
+                    <td>{{language}}</td>
+                    <td>{{region}}</td>
+                    <td>{{storeId}}</td>
+                    <td>{{storeProductId}}</td>
+                    <td>{{validProduct}}</td>
+                    <td>
+                        <button class="btn btn-xs btn-primary" data-toggle="widget" data-target="{{productId}}">Open</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+

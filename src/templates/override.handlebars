@@ -1,0 +1,68 @@
+<div class="vsInner">
+    <div class="vsSection">
+        <a href="http://www.virtusize.com/"><img class="vsLogo" src="http://www.virtusize.com/static/images/website/logo.png" alt="Virtusize" /></a>
+    </div>
+    <div class="vsSection">Environment:
+        {{> select_box environment}}
+    </div>
+    <div class="vsSection">Language:
+        {{> select_box languages}}
+    </div>
+    <div class="vsSection">Region:
+        {{> select_box regions}}
+    </div>
+    <div class="vsSection">
+        <a href="#" data-target="#vsAdvanced-sizes" class="vsAdvanced-toggle">Available sizes &amp; aliases</a>
+    </div>
+    <div class="vsSection">
+        <a href="#" data-target="#vsAdvanced-purchase" class="vsAdvanced-toggle">Purchase</a>
+    </div>
+    <div class="vsSection">
+        <a href="#" data-target="#vsAdvanced-debug" class="vsAdvanced-toggle">Debug</a>
+    </div>
+    <div class="vsSection">Version:
+        {{version}}
+    </div>
+    <div class="vsSection">
+        <a href="#" id="vsGo" class="vsButton">Go!</a>
+    </div>
+    <div class="vsSection vsClose">
+        <a href="#" title="Close">&times;</a>
+    </div>
+</div>
+<div id="vsAdvanced-sizes" class="vsAdvanced">
+    <div class="vsSection">
+        <h3>Available sizes <small>&mdash; JSON array: ["2457"]</small></h3>
+        <textarea id="vsAvailableSizes" class="vsAvailableSizes" cols="50" rows="7"></textarea>
+    </div>
+    <div class="vsSection">
+        <h3>Size aliases <small>&mdash; JSON object: {"2457": "large"}</small></h3>
+        <textarea id="vsSizeAliases" class="vsSizeAliases" cols="50" rows="7"></textarea>
+    </div>
+</div>
+<div id="vsAdvanced-purchase" class="vsAdvanced">
+    <div class="vsSection">
+        <h3>Your BID</h3>
+        <p class="vsBid">n/a</p>
+        <h3>Specify a size</h3>
+        <p><input id="vsPurchase-size" name="vsPurchase-size" style="width: 300px;" /></p>
+        <h3>Specify a size alias <small>optional</small></h3>
+        <p><input id="vsPurchase-size-alias" name="vsPurchase-size-alias" style="width: 300px;" /></p>
+        <h3>Choose a store user</h3>
+        {{> select_box users}}
+        <h3>Specify an image</h3>
+        <p><input id="vsPurchase-image" name="vsPurchase-image" style="width: 300px;" /></p>
+        <p><a href="#" id="vsPurchase" class="vsButton">Purchase!</a></p>
+    </div>
+    <div class="vsSection">
+        <h3>Available sizes</h3>
+        <pre class="vsAvailableSizes"></pre>
+    </div>
+    <div class="vsSection">
+        <h3>Size aliases</h3>
+        <pre class="vsSizeAliases"></pre>
+    </div>
+</div>
+<div id="vsAdvanced-debug" class="vsAdvanced">
+    {{> debug debug}}
+</div>

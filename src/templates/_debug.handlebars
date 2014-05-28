@@ -1,0 +1,79 @@
+{{#if isWidget}}
+    <div class="vsSection">
+        <h3>Widget</h3>
+        <p><strong>Integration version:</strong> {{integrationVersion}}</p>
+        <p><strong>API key:</strong> {{widget.apiKey}}</p>
+        <p><strong>BID:</strong> <span class="vsBid">n/a</span></p>
+        <p><strong>Button:</strong></p>
+        <p><pre style="max-width:300px;">{{{buttonHtml}}}</pre></p>
+        <p><strong>jQuery version:</strong> {{jQueryVersion}}</p>
+        <p><strong>Language:</strong> {{widget.language}}</p>
+        <p><strong>Region:</strong> {{widget.region}}</p>
+    </div>
+    {{#if isV2}}
+        <div class="vsSection">
+            <h3>Product</h3>
+            <p><strong>Id:</strong> {{widget.productData.id}}</p>
+            <p><strong>StoreProduct id:</strong> {{widget.productData.productDataId}}</p>
+            <p><strong>Store id:</strong> {{widget.productData.storeId}}</p>
+            <p><strong>Valid:</strong> {{widget.productData.validProduct}}</p>
+            <p><strong>Fetch meta data:</strong> {{widget.productData.fetchMetaData}}</p>
+        </div>
+    {{else}}
+        <div class="vsSection">
+            <h3>Product</h3>
+            <p><strong>Id:</strong> {{widget.productId}}</p>
+            <p><strong>StoreProduct id:</strong> {{widget.storeProductId}}</p>
+            <p><strong>Store id:</strong> {{widget.storeId}}</p>
+            <p><strong>Valid:</strong> {{widget.validProduct}}</p>
+            <p><strong>Fetch meta data:</strong> {{widget.fetchMetaData}}</p>
+        </div>
+    {{/if}}
+    <div class="vsSection">
+        <h3>Callbacks</h3>
+            {{#each widget.callbacks}}
+                {{this}}<br/>
+            {{/each}}
+    </div>
+    <div class="vsSection">
+        <h3>Available sizes</h3>
+        <pre class="vsAvailableSizes"></pre>
+    </div>
+    <div class="vsSection">
+        <h3>Size aliases</h3>
+        <pre class="vsSizeAliases"></pre>
+    </div>
+{{/if}}
+{{#if isOrder}}
+    <div class="vsSection">
+        <h3>Order</h3>
+        <p><strong>Order id:</strong> {{order.orderId}}</p>
+        <p><strong>User id:</strong> {{order.userId}}</p>
+        <p><strong>BID:</strong> <span class="vsBid">n/a</span></p>
+        <p><strong>API key:</strong> {{order.apiKey}}</p>
+        <p><strong>Region:</strong> {{order.region}}</p>
+        <p><strong>Total items:</strong> {{order.totalItems}}</p>
+        <p><strong>Total chunks:</strong> {{order.totalChunks}}</p>
+        <p><strong>jQuery version:</strong> {{jQueryVersion}}</p>
+    </div>
+    {{#each order.items}}
+    <div class="vsSection">
+        <h3>Order item</h3>
+        <strong>Product id:</strong> {{productId}}<br>
+        <strong>Variant id:</strong> {{variantId}}<br>
+        <strong>Size:</strong> {{size}}<br>
+        <strong>Size alias:</strong> {{sizeAlias}}<br>
+        <strong>Image url:</strong><br><input style="width:300px;" value="{{imageUrl}}" /><br>
+        <strong>URL:</strong><br><input style="width:300px;" value="{{url}}" /><br>
+        <strong>Color:</strong> {{color}}<br>
+        <strong>Gender:</strong> {{gender}}<br>
+        <strong>Unit price:</strong> {{unitPrice}}<br>
+        <strong>Currency:</strong> {{currency}}<br>
+        <strong>Quantity:</strong> {{quantity}}<br>
+    </div>
+    {{/each}}
+{{/if}}
+{{#if isNothing}}
+    <p>Nothing to debug</p>
+{{/if}}
+
