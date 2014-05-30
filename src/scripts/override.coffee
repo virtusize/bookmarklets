@@ -4,16 +4,18 @@ override = ((override) ->
     override.styles = '@@include("styles/override.min.css")'
     override.jQueryCDN = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
     override.bootstrapCDN = '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'
+    override.snippet = '!function(a,b,c,d,e,f,g){var h,i,j,k;for(a.Virtusize=e,a[e]=a[e]||[],a[e].methods=["setApiKey","setRegion","setLanguage","setWidgetOverlayColor","addWidget","ready","on","setAvailableSizes","setSizeAliases","addOrder","setUserId"],a[e].factory=function(b){return function(){var c;return c=Array.prototype.slice.call(arguments),c.unshift(b),a[e].push(c),a[e]}},k=a[e].methods,i=0,j=k.length;j>i;i++)h=k[i],a[e][h]=a[e].factory(h);a[e].snippetVersion="3.0.2",f=b.createElement(c),g=b.getElementsByTagName(c)[0],f.async=1,f.src=("https:"===a.location.protocol?"https://":"http://")+d,f.id="vs-integration",g.parentNode.insertBefore(f,g)}'
 
 
-    envs = [
-        "staging.virtusize.com"
-        "local.virtusize.com:5000"
-        "demo.virtusize.com"
-        "dev.virtusize.com"
-        "translations.virtusize.com"
-        "api.virtusize.com"
-    ]
+
+    envs = 
+        staging: "staging.virtusize.com"
+        development: "localhost:5000"
+        demo: "demo.virtusize.com"
+        dev: "dev.virtusize.com"
+        translations: "translations.virtusize.com"
+        production: "api.virtusize.com"
+    
     languages = [
         "default"
         "da"
@@ -83,6 +85,7 @@ override = ((override) ->
     ]
 
     override.init = ->
+        console.log 'hi'
         override.loadScript override.jQueryCDN, ->
             $ = window.jQueryVS = jQuery.noConflict(true)
 
@@ -148,19 +151,42 @@ override = ((override) ->
             override.close()
 
         override.div.on 'click', '#panel-widgets [data-toggle="widget"]', (ev) ->
+            ev.preventDefault()
             target = $(ev.target)
             id = target.data('target')
             window.vs.getWidget(id).open()
+
+        override.div.on 'click', '#panel-integrate [data-action="integrate-env"]', (ev) ->
+            ev.preventDefault()
+            target = $(ev.target)
+            env = target.data 'target'
+            override.loadIntegrationScript env
+            $('#panel-integrate [data-action="integrate-env"]').removeClass('btn-primary').addClass('btn-default')
+            target.addClass 'btn-primary'
+
+        override.div.on 'submit', '#integrate-add-widget', (ev) ->
+            ev.preventDefault()
+            target = $(ev.target)
+            productId = target.find('#productId').val()
+            buttonSelector = target.find('#buttonSelector').val()
+            window[Virtusize].addWidget productId, buttonSelector
+
 
     override.render = ->
         override.registerHandlers()
 
         override.renderNav()
         override.renderPanels()
-
         override.setIntegrationStatus()
 
         override.open()
+
+    override.refresh = ->
+        override.renderNav()
+        override.renderPanels()
+        override.setIntegrationStatus()
+        override.div.show()
+        
 
     override.renderNav = ->
         override.div.html global.templates["src/templates/bookmarklet.handlebars"] panelLinks: override.getPanelLinksData()
@@ -173,28 +199,59 @@ override = ((override) ->
             panels: override.getPanelData()
         )
 
+        if override.hasIntegrated()
+            env = override.detectEnvironment()
+            $('#panel-integrate [data-action="integrate-env"][data-target="' + env + '"]').removeClass('btn-default').addClass('btn-primary')
+
+
+
+
     override.setStatus = (statuses) ->
-        status = override.div.find('#vs-status')
+        status = override.div.find('.vs-status')
         status.html ''
         status.hide()
 
         for s in statuses
-            status.append $('<span class="label label-' + s.type + ' navbar-label">' + s.label + '</span>')
+            status.append $('<span class="label label-' + s.type + '">' + s.label + '</span> ')
         status.fadeIn()
 
     override.setIntegrationStatus = ->
         if override.hasIntegrated()
-            override.setStatus [label: 'integrated', type: 'success']
+            override.setStatus [
+                    label: 'integrated'
+                    type: 'success'
+                ,
+                    label: override.detectEnvironment()
+                    type: 'default'
+            ]
         else
             override.setStatus [label: 'not integrated', type: 'warning']
 
     override.hasIntegrated = ->
         Virtusize? and typeof Virtusize is 'string' and 'integrationVersion' of window[Virtusize]
 
+    override.detectEnvironment = ->
+        src = $('#vs-integration').attr 'src'
+        if src.match /api\.virtusize\.com/
+            'production'
+        else if src.match /staging\.virtusize\.com/
+            'staging'
+        else if src.match /demo\.virtusize\.com/
+            'demo'
+        else if src.match /dev\.virtusize\.com/
+            'dev'
+        else 
+            'development'
+
     override.getPanelData = ->
         panels = integrate:
                      id: 'panel-integrate'
                      title: 'Integrate'
+                     env_select_box:
+                        id: 'integrate-select-env' 
+                        options: envs
+                        addEmpty: true
+                     askForApiKey: not override.hasIntegrated()
                  ,
                  orders:
                      id: 'panel-orders'
@@ -291,7 +348,25 @@ override = ((override) ->
                 callback() unless isAbort
 
         firstScript.parentNode.insertBefore script, firstScript
+        script
 
+
+    override.loadIntegrationScript = (env) ->
+        $('#vs-integration').remove()
+
+        if override.hasIntegrated()
+            apiKey = window[Virtusize].apiKey
+            window[Virtusize] = null
+        else
+            apiKey = $('#integrate-apiKey').val()
+
+        script = $('<script type="text/javascript"></script>')
+        script.text override.snippet + '(window,document,"script","' + envs[env] + '/integration/v3.js","vs");'
+        $('head').append script
+
+        window[Virtusize].setApiKey apiKey 
+
+        override.refresh()
 
 
 

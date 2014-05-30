@@ -6,7 +6,41 @@
         </h3>
     </div>
     <div class="panel-body">
-        hi
+
+        <h4>Environment <span class="vs-status"></span></h4>
+
+        <div class="row">
+
+            {{#if askForApiKey}}
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="integrate-apiKey" placeholder="API Key">
+            </div>
+            {{/if}}
+
+            <div class="col-md-6">
+                <div class="btn-group">
+                    <button type="button" data-action="integrate-env" data-target="production" class="btn btn-default">Production</button>
+                    <button type="button" data-action="integrate-env" data-target="staging" class="btn btn-default">Staging</button>
+                    <button type="button" data-action="integrate-env" data-target="development" class="btn btn-default">Development</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="panel-body">
+
+        <h4>Add Widget</h4>
+        <form id="integrate-add-widget" class="form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="productId">Product ID</label>
+                <input type="text" class="form-control" id="productId" placeholder="Product ID">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="buttonSelector">Button Selector</label>
+                <input type="text" class="form-control" id="buttonSelector" placeholder="Button Selector">
+            </div>
+            <button type="submit" class="btn btn-default">Add Widget</button>
+        </form>
     </div>
 </div>
 
