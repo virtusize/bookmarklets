@@ -1,5 +1,9 @@
 # Virtusize Bookmarklets
 
+[VS Bookmarklet](https://rawgit.com/virtusize/bookmarklets/master/build/override.min.js)
+
+[VS Bookmarklet (Dev)](https://rawgit.com/virtusize/bookmarklets/develop/build/override.min.js)
+
 ## Getting set up 
 
 Node and NPM need to be installed. Install the Grunt commandline tools
