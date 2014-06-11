@@ -1,8 +1,8 @@
 # Virtusize Bookmarklets
 
-[VS Bookmarklet](javascript:void((function()%20{var%20element=document.createElement('script');%20element.setAttribute('src',%20'https://rawgit.com/virtusize/bookmarklets/master/build/override.min.js');element.setAttribute('id',%20'vs-bookmarklet');%20document.body.appendChild(element)})()))
+<a href="javascript:void((function()%20{var%20element=document.createElement('script');%20element.setAttribute('src',%20'https://rawgit.com/virtusize/bookmarklets/master/build/override.min.js');element.setAttribute('id',%20'vs-bookmarklet');%20document.body.appendChild(element)})())">VS Bookmarklet</a>
 
-[VS Bookmarklet (Dev)](javascript:void((function()%20{var%20element=document.createElement('script');%20element.setAttribute('src',%20'https://rawgit.com/virtusize/bookmarklets/develop/build/override.min.js');element.setAttribute('id',%20'vs-bookmarklet');%20document.body.appendChild(element)})()))
+<a href="javascript:void((function()%20{var%20element=document.createElement('script');%20element.setAttribute('src',%20'https://rawgit.com/virtusize/bookmarklets/develop/build/override.min.js');element.setAttribute('id',%20'vs-bookmarklet');%20document.body.appendChild(element)})())">VS Bookmarklet (Dev)</a>
 
 ## Getting set up 
 
