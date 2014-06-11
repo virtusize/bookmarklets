@@ -1,0 +1,59 @@
+<div id="{{id}}" class="panel panel-default panel-virtusize">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {{title}}
+            <a href="#" class="close" data-toggle="panel" data-target="#{{id}}">&times;</a>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <h4>Order</h4>
+        {{#each orders}}
+            <dl class="dl-horizontal">
+                <dt>Order ID</dt>
+                <dd>{{orderId}}</dd>
+                <dt>User ID</dt>
+                <dd>{{userId}}</dd>
+                <dt>Region</dt>
+                <dd>{{region}}</dd>
+                <dt>Total items</dt>
+                <dd>{{totalItems}}</dd>
+            </dl>
+        {{/each}}
+        <h4>Order Items</h4>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Size</th>
+                    <th>Alias</th>
+                    <th>Color</th>
+                    <th>Gender</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                    {{#each items}}
+                        <tr>
+                            <td>{{productId}}</td>
+                            <td>{{size}}</td>
+                            <td>{{sizeAlias}}</td>
+                            <td>{{color}}</td>
+                            <td>{{gender}}</td>
+                            <td>{{quantity}}</td>
+                            <td>{{unitPrice}}</td>
+                            <td><a href="{{imageUrl}}" target="_blank" class="btn btn-xs btn-primary">Show</a></td>
+                            <td><a href="{{url}}" target="_blank" class="btn btn-xs btn-primary">Open</a></td>
+                        </tr>
+                    {{/each}}
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+

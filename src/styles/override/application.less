@@ -1,0 +1,70 @@
+#virtusize-bookmarklet {
+    * {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    }
+
+    ul, ol, dl {
+        font-size: auto;
+    }
+
+    .label,
+    .btn,
+    input {
+        width: auto;
+        height: auto;
+    }
+
+    .navbar-brand {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        line-height: 50px;
+        .logo {
+            vertical-align: top;
+        }
+    }
+
+    .panel-virtusize {
+        position: fixed;
+        z-index: 2147483645;
+        bottom: 50px;
+        left: 15px;
+        right: 15px;
+        .box-shadow(0 3px 9px rgba(0,0,0,.5));
+        display: none;
+    }
+    .panel-title .close {
+        line-height: 14px;
+    }
+
+    .navbar-nav > li > .close {
+        line-height: 16px;
+        @media screen and (max-width: @screen-xs-max) {
+            float: left;
+        }
+    }
+
+    .vs-status .label {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .navbar-nav .label {
+        .navbar-vertical-align(@line-height-computed);
+        padding: 0.4em 0.6em 0.5em;
+
+        @media (min-width: @grid-float-breakpoint) {
+            float: left;
+
+            // Outdent the form if last child to line up with content down the page
+            &.navbar-right:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .form-inline {
+        margin-bottom: 15px;
+    }
+}
+
+

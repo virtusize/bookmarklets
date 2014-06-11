@@ -1,0 +1,55 @@
+<div id="{{id}}" class="panel panel-default panel-virtusize">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {{title}}
+            <a href="#" class="close" data-toggle="panel" data-target="#{{id}}">&times;</a>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Environment</dt>
+            <dd><span class="vs-status"></span></dd>
+            <dt>BID</dt>
+            <dd>{{bid}}</dd>
+        </dl>
+        <p>
+            <button type="button" data-action="reset-bid" class="btn btn-default">Reset your identity</button>
+        </p>
+
+
+        {{#if isDemoStore}}
+        <h4>Demo Store Product Sizes</h4>
+        <div class="btn-group" style="margin-bottom:15px;">
+            <button type="button" data-action="fill-input-field" data-target="[name='size']" data-value="small" class="btn btn-default">Dress</button>
+            <button type="button" data-action="fill-input-field" data-target="[name='size']" data-value="medium" class="btn btn-default">Shirt</button>
+            <button type="button" data-action="fill-input-field" data-target="[name='size']" data-value="Strech" class="btn btn-default">Pants</button>
+            <button type="button" data-action="fill-input-field" data-target="[name='size']" data-value="Medium" class="btn btn-default">Bag</button>
+            <button type="button" data-action="fill-input-field" data-target="[name='size']" data-value="42" class="btn btn-default">Shoe</button>
+        </div>
+        {{/if}}
+
+        {{#each widgets}}
+        <form data-action="add-order" class="form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="productId">Product ID</label>
+                <input type="text" class="form-control" name="productId" value="{{productId}}" placeholder="Product ID" required>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="size">Size</label>
+                <input type="text" class="form-control" name="size" placeholder="Size" required>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="sizeAlias">Size Alias</label>
+                <input type="text" class="form-control" name="sizeAlias" placeholder="Size Alias">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="imageUrl">Image URL</label>
+                <input type="text" class="form-control" name="imageUrl" value="{{../ogpImageUrl}}" placeholder="Image URL" required>
+            </div>
+            <button type="submit" class="btn btn-default">Purchase</button>
+        </form>
+        {{/each}}
+
+    </div>
+</div>
+
