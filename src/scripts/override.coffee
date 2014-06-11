@@ -5,37 +5,29 @@ override = ((override) ->
     override.jQueryCDN = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
     override.bootstrapCDN = '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'
     override.snippet = '!function(a,b,c,d,e,f,g){var h,i,j,k;for(a.Virtusize=e,a[e]=a[e]||[],a[e].methods=["setApiKey","setRegion","setLanguage","setWidgetOverlayColor","addWidget","ready","on","setAvailableSizes","setSizeAliases","addOrder","setUserId"],a[e].factory=function(b){return function(){var c;return c=Array.prototype.slice.call(arguments),c.unshift(b),a[e].push(c),a[e]}},k=a[e].methods,i=0,j=k.length;j>i;i++)h=k[i],a[e][h]=a[e].factory(h);a[e].snippetVersion="3.0.2",f=b.createElement(c),g=b.getElementsByTagName(c)[0],f.async=1,f.src=("https:"===a.location.protocol?"https://":"http://")+d,f.id="vs-integration",g.parentNode.insertBefore(f,g)}'
-
-
-
-    envs = 
+    override.utilIFrameName = "virtusize-util-iframe"
+    override.tldRegex = /[^.]*\.([^.]*|..\...|...\...)$/
+    override.bidCookieKey = "vs.bid"
+    override.envs = 
         staging: "staging.virtusize.com"
-        development: "localhost:5000"
+        development: "local.virtusize.com:5000"
         demo: "demo.virtusize.com"
         dev: "dev.virtusize.com"
         translations: "translations.virtusize.com"
         production: "api.virtusize.com"
-    
-    languages = [
-        "default"
-        "da"
-        "de"
-        "en"
-        "es"
-        "fi"
-        "fr"
-        "id"
-        "it"
-        "ja"
-        "ko"
-        "ms"
-        "no"
-        "pl"
-        "pt"
-        "sv"
-        "th"
-        "vi"
+    override.languages = [
+        'default'
+        'en'
+        'de'
+        'es'
+        'fr'
+        'it'
+        'ja'
+        'nl'
+        'pt'
+        'sv'
     ]
+
     regions = [
         "default"
         "AT"
@@ -55,96 +47,106 @@ override = ((override) ->
         "SE"
         "US"
     ]
-    users = [
-        "store-user-amalia"
-        "store-user-anders"
-        "store-user-andreas"
-        "store-user-andrej"
-        "store-user-bjorn"
-        "store-user-erik"
-        "store-user-fanny"
-        "store-user-faustine"
-        "store-user-gustaf"
-        "store-user-hannes"
-        "store-user-hayato"
-        "store-user-helene"
-        "store-user-igor"
-        "store-user-jevgenij"
-        "store-user-krisse"
-        "store-user-nuhad"
-        "store-user-peder"
-        "store-user-per"
-        "store-user-robert"
-        "store-user-sabina"
-        "store-user-yingyu"
-        "store-user-test01"
-        "store-user-test02"
-        "store-user-test03"
-        "store-user-test04"
-        "store-user-test05"
-    ]
 
     override.init = ->
-        console.log 'hi'
+        override.registerHandlebarsHelpers()
+
         override.loadScript override.jQueryCDN, ->
             $ = window.jQueryVS = jQuery.noConflict(true)
-
             override.injectStyle()
             override.injectMarkup()
             override.render()
+            override.hide true
 
     override.injectStyle = ->
-        style = $('<style></style>')
+        style = $('<style id="virtusize-bookmarklet-styles"></style>')
         style.attr 'type', 'text/css'
-        style.text override.styles
+        style.html override.styles
         style.appendTo $('head')
 
     override.injectMarkup = ->
         override.div = $('<div id="virtusize-bookmarklet"></div>')
         override.div.appendTo $("body")
 
-    override.show = ->
-        override.div.find('.navbar').addClass 'in'
+    override.show = (fast=false) ->
+        navbar = override.div.find('.navbar')
+        if fast
+            navbar.show()
+        else
+            navbar.fadeIn()
 
-    override.hide = ->
-        override.div.find('.navbar').removeClass 'in'
+    override.hide = (fast=false) ->
+        navbar = override.div.find('.navbar')
+        panels = override.div.find('.panel')
+        if fast
+            navbar.hide()
+            panels.hide()
+        else
+            navbar.fadeOut()
+            panels.fadeOut()
 
     override.open = ->
         setTimeout ->
             override.show()
-        , 300
+        , 200
         
     override.close = ->
         override.hide()
         setTimeout ->
             override.remove()
+            override.removeUtilIframe()
+            $('vs-bookmarklet').remove()
         , 300
 
     override.remove = ->
         override.div.remove()
         override.div = null
 
+    override.showPanel = (panel, fast=false) ->
+        panelLink = override.div.find('.navbar [data-toggle="panel"][data-target="' + panel + '"]')
+        panelLinks = override.div.find('.navbar [data-toggle="panel"]')
+        panels = override.div.find('.panel')
+        panel = override.div.find(panel)
+
+        panels.removeClass 'in'
+        panel.addClass 'in'
+
+        if fast
+            panels.hide()
+            panel.show()
+        else
+            panels.fadeOut()
+            panel.fadeIn()
+
+        panelLinks.parent().removeClass 'active'
+        panelLink.parent().addClass 'active'
+
+    override.hidePanel = (panel, fast=false) ->
+        panelLink = override.div.find('.navbar [data-toggle="panel"][data-target="' + panel + '"]')
+        panel = override.div.find(panel)
+
+        panel.removeClass 'in'
+
+        if fast
+            panel.hide()
+        else
+            panel.fadeOut()
+
+        panelLink.parent().removeClass 'active'
+
+    override.togglePanel = (panel) ->
+        panel = override.div.find(panel)
+        
+        if panel.hasClass 'in'
+            override.hidePanel panel
+        else
+            override.showPanel panel
+
     override.registerHandlers = ->
         override.div.on 'click', '[data-toggle="panel"]', (ev) ->
-            panels = $('.panel')
-            panelLinks = $('.navbar [data-toggle="panel"]')
             ev.preventDefault()
-            target = $(ev.target)
-            id = target.data('target')
-            panelLink = $('.navbar [data-toggle="panel"][data-target="' + id + '"]')
-            panel = $(id)
-
-            if panel.hasClass 'in'
-                panel.removeClass 'in'
-                panel.fadeOut()
-                panelLink.parent().removeClass 'active'
-            else
-                panels.removeClass 'in'
-                panels.fadeOut()
-                panel.addClass 'in'
-                panel.fadeIn()
-                panelLinks.parent().removeClass 'active'
-                panelLink.parent().addClass 'active'
+            target = override.div.find(ev.target)
+            override.togglePanel target.data('target')
 
         override.div.on 'click', '.navbar .close', (ev) ->
             ev.preventDefault()
@@ -152,25 +154,55 @@ override = ((override) ->
 
         override.div.on 'click', '#panel-widgets [data-toggle="widget"]', (ev) ->
             ev.preventDefault()
-            target = $(ev.target)
+            target = override.div.find(ev.target)
             id = target.data('target')
-            window.vs.getWidget(id).open()
+            window[Virtusize].getWidget(id).open()
 
         override.div.on 'click', '#panel-integrate [data-action="integrate-env"]', (ev) ->
             ev.preventDefault()
-            target = $(ev.target)
+            target = override.div.find(ev.target)
             env = target.data 'target'
             override.loadIntegrationScript env
-            $('#panel-integrate [data-action="integrate-env"]').removeClass('btn-primary').addClass('btn-default')
+            override.div.find('#panel-integrate [data-action="integrate-env"]').removeClass('btn-primary').addClass('btn-default')
             target.addClass 'btn-primary'
 
-        override.div.on 'submit', '#integrate-add-widget', (ev) ->
+        override.div.on 'click', '[data-action="fill-input-field"]', (ev) ->
             ev.preventDefault()
-            target = $(ev.target)
-            productId = target.find('#productId').val()
-            buttonSelector = target.find('#buttonSelector').val()
-            window[Virtusize].addWidget productId, buttonSelector
+            target = override.div.find(ev.target)
+            input = target.data 'target'
+            value = target.data 'value'
+            override.div.find(input).val value
 
+        override.div.on 'click', '#panel-purchase [data-action="reset-bid"]', (ev) ->
+            ev.preventDefault()
+            override.resetBid()
+
+        override.div.on 'submit', 'form[data-action="add-widget"]', (ev) ->
+            ev.preventDefault()
+            target = override.div.find(ev.target)
+            window[Virtusize].addWidget
+                productId: target.find('[name="productId"]').val()
+                buttonSelector: target.find('[name="buttonSelector"]').val()
+                language:target.find('[name="language"]').val()
+
+            window.setTimeout ->
+                override.refresh '#panel-integrate'
+            , 700
+
+        override.div.on 'submit', 'form[data-action="add-order"]', (ev) ->
+            ev.preventDefault()
+            target = override.div.find(ev.target)
+            orderItem =
+                productId: target.find('[name="productId"]').val()
+                size: target.find('[name="size"]').val()
+                sizeAlias: target.find('[name="sizeAlias"]').val()
+                imageUrl: target.find('[name="imageUrl"]').val()
+
+            override.purchase orderItem
+
+            window.setTimeout ->
+                override.refresh '#panel-orders'
+            , 300
 
     override.render = ->
         override.registerHandlers()
@@ -181,19 +213,21 @@ override = ((override) ->
 
         override.open()
 
-    override.refresh = ->
+    override.refresh = (backToPanel)->
         override.renderNav()
         override.renderPanels()
         override.setIntegrationStatus()
-        override.div.show()
-        
+        override.show true
 
+        if backToPanel?
+            override.showPanel(backToPanel, true)
+        
     override.renderNav = ->
         override.div.html global.templates["src/templates/bookmarklet.handlebars"] panelLinks: override.getPanelLinksData()
 
     override.renderPanels = ->
         override.div.find('#vs-panels').remove()
-        panelLinks = $('.navbar [data-toggle="panel"]')
+        panelLinks = override.div.find('.navbar [data-toggle="panel"]')
         panelLinks.parent().removeClass 'active'
         override.div.append global.templates["src/templates/panels.handlebars"](
             panels: override.getPanelData()
@@ -201,10 +235,7 @@ override = ((override) ->
 
         if override.hasIntegrated()
             env = override.detectEnvironment()
-            $('#panel-integrate [data-action="integrate-env"][data-target="' + env + '"]').removeClass('btn-default').addClass('btn-primary')
-
-
-
+            override.div.find('#panel-integrate [data-action="integrate-env"][data-target="' + env + '"]').removeClass('btn-default').addClass('btn-primary')
 
     override.setStatus = (statuses) ->
         status = override.div.find('.vs-status')
@@ -247,10 +278,6 @@ override = ((override) ->
         panels = integrate:
                      id: 'panel-integrate'
                      title: 'Integrate'
-                     env_select_box:
-                        id: 'integrate-select-env' 
-                        options: envs
-                        addEmpty: true
                      askForApiKey: not override.hasIntegrated()
                  ,
                  orders:
@@ -271,22 +298,33 @@ override = ((override) ->
 
         if override.hasIntegrated() 
             $.extend panels.debug,
-                apiKey: window.vs.apiKey
-                bid: window.vs.bid
-                snippetVersion: window.vs.snippetVersion
-                integrationVersion: window.vs.integrationVersion
+                apiKey: window[Virtusize].apiKey
+                bid: window[Virtusize].bid
+                snippetVersion: window[Virtusize].snippetVersion
+                integrationVersion: window[Virtusize].integrationVersion
                 jQueryVersion: jQuery().jquery
-                isModernBrowser: ""+window.vs.isModernBrowser
-                cookiesDisabled: ""+window.vs.environment.cookiesDisabled
-                numberOfWidgets: Object.keys(window.vs.widgets).length
-                numberOfOrders: Object.keys(window.vs.orders).length
+                isModernBrowser: "" + window[Virtusize].isModernBrowser
+                cookiesDisabled: "" + window[Virtusize].environment.cookiesDisabled
+                numberOfWidgets: Object.keys(window[Virtusize].widgets).length
+                numberOfOrders: Object.keys(window[Virtusize].orders).length
                 location: window.location.href
 
             $.extend panels.widgets,
-                widgets: window.vs.widgets
+                widgets: window[Virtusize].widgets
 
             $.extend panels.orders,
-                orders: window.vs.orders
+                orders: window[Virtusize].orders
+
+            $.extend panels.integrate,
+                hasWidgets: Object.keys(window[Virtusize].widgets).length > 0
+                widgets: window[Virtusize].widgets
+                isDemoStore: window[Virtusize].apiKey is '15cc36e1d7dad62b8e11722ce1a245cb6c5e6692'
+
+            $.extend panels.purchase,
+                bid: window[Virtusize].bid
+                widgets: window[Virtusize].widgets
+                ogpImageUrl: override.getOgpImage()
+                isDemoStore: window[Virtusize].apiKey is '15cc36e1d7dad62b8e11722ce1a245cb6c5e6692'
 
         panels
 
@@ -294,13 +332,13 @@ override = ((override) ->
         panelLinks = []
 
         if override.hasIntegrated()
-            if (Object.keys(window.vs.orders).length is 0 and Object.keys(window.vs.widgets).length is 0) or
-               (Object.keys(window.vs.widgets).length > 0)
+            if (Object.keys(window[Virtusize].orders).length is 0 and Object.keys(window[Virtusize].widgets).length is 0) or
+               (Object.keys(window[Virtusize].widgets).length > 0)
                 panelLinks.push
                     id: 'panel-integrate'
                     title: 'Integrate'
 
-            if Object.keys(window.vs.widgets).length > 0
+            if Object.keys(window[Virtusize].widgets).length > 0
                 panelLinks.push
                     id: 'panel-purchase'
                     title: 'Purchase'
@@ -308,7 +346,7 @@ override = ((override) ->
                     id: 'panel-widgets'
                     title: 'Widgets'
 
-            if Object.keys(window.vs.orders).length > 0
+            if Object.keys(window[Virtusize].orders).length > 0
                 panelLinks.push
                     id: 'panel-orders'
                     title: 'Orders'
@@ -351,82 +389,175 @@ override = ((override) ->
         script
 
 
-    override.loadIntegrationScript = (env) ->
+    override.loadIntegrationScript = (env, panel="#panel-integrate") ->
         $('#vs-integration').remove()
+        override.removeUtilIframe()
 
         if override.hasIntegrated()
-            apiKey = window[Virtusize].apiKey
+            override.previousVs = window[Virtusize]
+            override.removeButtonEventHandlers override.previousVs
             window[Virtusize] = null
         else
-            apiKey = $('#integrate-apiKey').val()
+            apiKey = override.div.find('#integrate-apiKey').val()
 
         script = $('<script type="text/javascript"></script>')
-        script.text override.snippet + '(window,document,"script","' + envs[env] + '/integration/v3.js","vs");'
+        script.text override.snippet + '(window,document,"script","' + override.envs[env] + '/integration/v3.js?source","vs");'
         $('head').append script
 
-        window[Virtusize].setApiKey apiKey 
+        window[Virtusize].setApiKey(if override.previousVs? then override.previousVs.apiKey else apiKey)
+        if override.previousVs?
+            override.addAllWidgets override.previousVs
 
-        override.refresh()
-
-
+        # Has to wait for the integration to initialize with the util iframe
+        # and everything else, so vs.ready is not enough
+        window.setTimeout ->
+            override.refresh panel
+        , 1000
 
     override.removeUtilIframe = ->
         $("iframe[name=\"virtusize-util-iframe\"]").remove()
 
-    override.removeButtonEventHandlers = ->
-        origVsWidget.vsWidgetButton.unbind "click" if origVsWidget? and origVsWidget.vsWidgetButton?
+    override.removeButtonEventHandlers = (vs) ->
+        for productId, widget of vs.widgets
+            widget.buttons.unbind "click.virtusize"
+            widget.buttons.hide()
 
-    override.integrate = ->
-        availableSizes = (if $("#vsAvailableSizes").val() then JSON.parse($("#vsAvailableSizes").val()) else "not available")
-        sizeAliases = (if $("#vsSizeAliases").val() then JSON.parse($("#vsSizeAliases").val()) else "not available")
-        override.removeUtilIframe()
-        override.removeButtonEventHandlers()
-        override.overrideVsWidgetAsyncInit()
+    override.addAllWidgets = (vs) ->
+        for productId, widget of vs.widgets
+            window[Virtusize].addWidget override.widgetToObject(widget)
 
-    override.loadVsIntegration = ->
-        $.getScript "//" + $("#vsEnv").val() + "/widget/v2.js"
+    override.widgetToObject = (widget) ->
+        productId: widget.getProductId()
+        productImageUrl: widget.getProductImageUrl()
+        buttonSelector: widget.getButtonSelector()
+        productVersion: widget.getProductVersion()
+        region: widget.getRegion()
+        language: widget.getLanguage()
+        availableSizes: widget.getAvailableSizes()
+        sizeAliases: widget.getSizeAliases()
 
-    override.purchase = ->
-        override.overrideVsOrderConfirmation()
+    override.purchase = (orderItem) ->
+        window[Virtusize].addOrder
+            orderId: new Date().getTime()
+            userId: window[Virtusize].bid
+            items: [orderItem]
 
-    override.overrideVsOrderConfirmation = ->
-        env = $("#vsEnv").val()
-        user = $("#vsPurchase-user").val()
-        size = $("#vsPurchase-size").val()
-        sizeAlias = $("#vsPurchase-size-alias").val()
-        image = $("#vsPurchase-image").val()
-        if env and user and size and image
-            window.vsOrderConfirmation = (order) ->
-                order.setApiKey origVsWidget.getApiKey()
-                order.setOrderId "order-" + Date.now()
-                order.setUserId user
-                order.setRegion $("#vsRegion").val() unless $("#vsRegion").val() is "default"
-                data =
-                    productId: origVsWidget.productData.id
-                    size: size
-                    imageUrl: image
+    override.resetBid = ->
+        override.removeBid()
+        iframe = $('iframe[name="' + override.utilIFrameName + '"]')
+        host = iframe.attr('src').match(/(^.*)\/integration\/v3/)[1]
+        utilIFrame = iframe[0].contentWindow
+        ev = 
+            url: '/integration/v3/destroy-session-hash?apiKey=' + window[Virtusize].apiKey
+            type: 'POST'
+            name: 'integration-reset-bid'
 
-                data["sizeAlias"] = sizeAlias if sizeAlias
-                order.addItem data
-                window.console and console.log(order)
+        utilIFrame.postMessage JSON.stringify(ev), host
 
-            override.loadVsOrderConfirmation()
-        else
-            messages = []
-            messages.push "Please choose an environment"    unless env
-            messages.push "Please choose a size"    unless size
-            messages.push "Please choose a user"    unless user
-            messages.push "Please choose an image"    unless image
-            window.console and console.log(messages.join("\n"))
-            alert messages.join("\n")
+        window.setTimeout ->
+            override.loadIntegrationScript override.detectEnvironment(), '#panel-purchase'
+        , 500
 
-    override.loadVsOrderConfirmation = ->
-        vsTemp = window.Virtusize
-        $.getScript "//" + $("#vsEnv").val() + "/order-confirmation/v1.js", (data, textStatus, jqxhr) ->
+    override.writeCookie = (key, value, options) ->
+        if value? and not $.isFunction(value)
+            options = $.extend(
+                expires: 1
+                path: "/"
+            , options)
+
+            if typeof options.expires is "number"
+                days = options.expires
+                t = options.expires = new Date()
+                t.setDate t.getDate() + days
+
+            # use expires attribute, max-age is not supported by IE
+            return (document.cookie = [
+                encodeURIComponent(key)
+                "="
+                String(value)
+                (if options.expires then "; expires=" + options.expires.toUTCString() else "")
+                (if options.path then "; path=" + options.path else "")
+                (if options.domain then "; domain=" + options.domain else "")
+                (if options.secure then "; secure" else "")
+            ].join(""))
+
+        null
+
+    override.readCookie = (key) ->
+        
+        # To prevent the for loop in the first place assign an empty array
+        # in case there are no cookies at all. Also prevents odd result when
+        # calling $.cookie().
+        cookies = (if document.cookie then document.cookie.split("; ") else [])
+
+        for cookie in cookies
+            parts = cookie.split("=")
+            name = decodeURIComponent(parts.shift())
+            return parts.join("=") if key? and key is name
             
-            # Move back the original integration window.Virtusize, since
-            # order confirmation is polluting the same variable. :(
-            window.Virtusize = vsTemp
+        null
+
+    override.removeCookie = (key, options) ->
+        return false if override.readCookie key is null
+        
+        # Must not alter options, thus extending a fresh object...
+        override.writeCookie key, "", $.extend({}, options, expires: -1)
+        not override.readCookie key
+
+    override.removeBid = ->
+        override.removeCookie override.bidCookieKey,
+            domain: override.tld(window.location.hostname)
+        override.removeCookie override.bidCookieKey,
+            domain: '.virtusize.com'
+    
+    ###
+    Identifies the current top level domain by a regex. This regex is only
+    considering the amount of characters in the domain and will not work
+    properly for domains shorter than 3 characters.
+    
+    The regex is from https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/middleware/cookies.rb
+    
+    This regular expression is used to split the levels of a domain.
+    The top level domain can be any string without a period or
+    .**, ***.** style TLDs like co.uk or com.au
+    
+    www.example.co.uk gives:
+    $& => example.co.uk
+    
+    example.com gives:
+    $& => example.com
+    
+    lots.of.subdomains.example.local gives:
+    $& => example.local
+    ###
+    override.tld = (hostname) ->
+        match = hostname.match(override.tldRegex)
+        (if match then "." + match[0] else hostname)
+
+    override.getOgpImage = ->
+        data = ogp.parse()
+        if 'image' of data
+            image = data.image
+        else if 'image_url' of data
+            image = data.image_url
+
+        if $.isArray(image) then image[0] else image
+        
+
+    override.registerHandlebarsHelpers = ->
+        Handlebars.registerHelper 'language_select_box', () ->
+
+            str = '<select name="language" class="form-control">'
+
+            for lang in override.languages
+                str += '<option value="' + lang + '"' + (if @? and @language is lang then ' selected' else '') + '>' + lang + '</option>'
+
+            str += '</select>'
+
+            new Handlebars.SafeString str
+            
+
+
 
     override
 )(override or {})

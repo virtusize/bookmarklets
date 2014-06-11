@@ -24,3 +24,19 @@ directory called build.
 
     grunt watch
 
+## Update Gist
+For updating butschis gist, you got to be butschi. Next install gist gem "gem
+install gist". Then run the following command:
+
+    gist build/override.min.js -u <hash-of-gist>
+
+## Bookmarklet
+The bookmarklet has a few more requirements. First, it has a special format,
+since it should be URL encoded. It looks like this:
+
+    javascript:void((function()%20{var%20element=document.createElement('script');%20element.setAttribute('src',%20'https://rawgit.com/butschi/<hash-of-gist>/raw');element.setAttribute('id',%20'vs-bookmarklet');%20document.body.appendChild(element)})())
+
+You notice that it is not referencing the raw gist file directly, but is going
+through a proxy: rawgit.com. This is due to the fact that gist does not set the
+content type of the file correctly, which results in WebKIT and other browsers
+not being able to inject the file correctly into the page.

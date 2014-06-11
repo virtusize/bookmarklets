@@ -5,15 +5,19 @@
             <a href="#" class="close" data-toggle="panel" data-target="#{{id}}">&times;</a>
         </h3>
     </div>
-    <div class="panel-body">
 
-        <h4>Environment <span class="vs-status"></span></h4>
 
+    <div class="container">
         <div class="row">
+            <div class="col-md-12">
+                <h4>Environment <span class="vs-status"></span></h4>
+            </div>
 
             {{#if askForApiKey}}
             <div class="col-md-6">
                 <input type="text" class="form-control" id="integrate-apiKey" placeholder="API Key">
+                <br>
+                <button type="button" data-action="fill-input-field" data-target="#integrate-apiKey" data-value="15cc36e1d7dad62b8e11722ce1a245cb6c5e6692" class="btn btn-default">Use Virtusize Demo Store</button>
             </div>
             {{/if}}
 
@@ -26,21 +30,66 @@
             </div>
         </div>
 
-    </div>
-    <div class="panel-body">
+        {{#if isDemoStore}}
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Demo Store Products</h4>
+                <div class="btn-group">
+                    <button type="button" data-action="fill-input-field" data-target="[name='productId']" data-value="vs_dress" class="btn btn-default">Dress</button>
+                    <button type="button" data-action="fill-input-field" data-target="[name='productId']" data-value="vs_shirt" class="btn btn-default">Shirt</button>
+                    <button type="button" data-action="fill-input-field" data-target="[name='productId']" data-value="vs_pants" class="btn btn-default">Pants</button>
+                    <button type="button" data-action="fill-input-field" data-target="[name='productId']" data-value="vs_bag" class="btn btn-default">Bag</button>
+                    <button type="button" data-action="fill-input-field" data-target="[name='productId']" data-value="vs_shoe" class="btn btn-default">Shoe</button>
+                </div>
+            </div>
+        </div>
+        {{/if}}
 
-        <h4>Add Widget</h4>
-        <form id="integrate-add-widget" class="form-inline" role="form">
-            <div class="form-group">
-                <label class="sr-only" for="productId">Product ID</label>
-                <input type="text" class="form-control" id="productId" placeholder="Product ID">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Add Widget</h4>
+                <form data-action="add-widget" class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="sr-only" for="productId">Product ID</label>
+                        <input type="text" class="form-control" name="productId" placeholder="Product ID">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="buttonSelector">Button Selector</label>
+                        <input type="text" class="form-control" name="buttonSelector" placeholder="Button Selector">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="language">Language</label>
+                        {{language_select_box}}
+                    </div>
+                    <button type="submit" class="btn btn-default">Add Widget</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label class="sr-only" for="buttonSelector">Button Selector</label>
-                <input type="text" class="form-control" id="buttonSelector" placeholder="Button Selector">
+        </div>
+
+        {{#if hasWidgets}}
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Override Widgets</h4>
+                {{#each widgets}}
+                <form data-action="add-widget" class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="sr-only" for="productId">Product ID</label>
+                        <input type="text" class="form-control" name="productId" value="{{productId}}" placeholder="Product ID">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="buttonSelector">Button Selector</label>
+                        <input type="text" class="form-control" name="buttonSelector" value="{{buttonSelector}}" placeholder="Button Selector">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="language">Language</label>
+                        {{language_select_box}}
+                    </div>
+                    <button type="submit" class="btn btn-default">Override Widget</button>
+                </form>
+                {{/each}}
             </div>
-            <button type="submit" class="btn btn-default">Add Widget</button>
-        </form>
+        </div>
+        {{/if}}
     </div>
 </div>
 

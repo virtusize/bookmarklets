@@ -28,9 +28,11 @@
                     <td>{{region}}</td>
                     <td>{{storeId}}</td>
                     <td>{{storeProductId}}</td>
-                    <td>{{validProduct}}</td>
+                    <td>{{#if validProduct}}{{validProduct}}{{else}}false{{/if}}</td>
                     <td>
-                        <button class="btn btn-xs btn-primary" data-toggle="widget" data-target="{{productId}}">Open</button>
+                        {{#if validProduct}}
+                            <button class="btn btn-xs btn-primary" data-toggle="widget" data-target="{{productId}}">Open</button>
+                        {{/if}}
                     </td>
                 </tr>
                 {{/each}}
