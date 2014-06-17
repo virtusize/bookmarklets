@@ -12,6 +12,8 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+- Feature: Added productImageUrl to integrate and widget panels. (hs)
+
 ### 0.1.0
 
 - Feature: initial release of bookmarklet. (hs)
