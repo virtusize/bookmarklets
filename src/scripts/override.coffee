@@ -184,6 +184,7 @@ override = ((override) ->
                 productId: target.find('[name="productId"]').val()
                 buttonSelector: target.find('[name="buttonSelector"]').val()
                 language:target.find('[name="language"]').val()
+                productImageUrl:target.find('[name="productImageUrl"]').val()
 
             window.setTimeout ->
                 override.refresh '#panel-integrate'
@@ -319,6 +320,7 @@ override = ((override) ->
                 hasWidgets: Object.keys(window[Virtusize].widgets).length > 0
                 widgets: window[Virtusize].widgets
                 isDemoStore: window[Virtusize].apiKey is '15cc36e1d7dad62b8e11722ce1a245cb6c5e6692'
+                ogpImageUrl: override.getOgpImage()
 
             $.extend panels.purchase,
                 bid: window[Virtusize].bid

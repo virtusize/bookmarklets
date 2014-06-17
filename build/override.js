@@ -997,7 +997,8 @@ override = (function(override) {
       window[Virtusize].addWidget({
         productId: target.find('[name="productId"]').val(),
         buttonSelector: target.find('[name="buttonSelector"]').val(),
-        language: target.find('[name="language"]').val()
+        language: target.find('[name="language"]').val(),
+        productImageUrl: target.find('[name="productImageUrl"]').val()
       });
       return window.setTimeout(function() {
         return override.refresh('#panel-integrate');
@@ -1149,7 +1150,8 @@ override = (function(override) {
       $.extend(panels.integrate, {
         hasWidgets: Object.keys(window[Virtusize].widgets).length > 0,
         widgets: window[Virtusize].widgets,
-        isDemoStore: window[Virtusize].apiKey === '15cc36e1d7dad62b8e11722ce1a245cb6c5e6692'
+        isDemoStore: window[Virtusize].apiKey === '15cc36e1d7dad62b8e11722ce1a245cb6c5e6692',
+        ogpImageUrl: override.getOgpImage()
       });
       $.extend(panels.purchase, {
         bid: window[Virtusize].bid,
@@ -1516,7 +1518,11 @@ function program6(depth0,data) {
   if (helper = helpers.buttonSelector) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.buttonSelector); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" placeholder=\"Button Selector\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"language\">Language</label>\n                        ";
+    + "\" placeholder=\"Button Selector\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productImageUrl\">Product Image URL</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productImageUrl\" value=\"";
+  if (helper = helpers.productImageUrl) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.productImageUrl); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" placeholder=\"Product Image URL\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"language\">Language</label>\n                        ";
   if (helper = helpers.language_select_box) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.language_select_box); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -1542,7 +1548,7 @@ function program6(depth0,data) {
   buffer += "\n\n            <div class=\"col-md-6\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"production\" class=\"btn btn-default\">Production</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"staging\" class=\"btn btn-default\">Staging</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"development\" class=\"btn btn-default\">Development</button>\n                </div>\n            </div>\n        </div>\n\n        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isDemoStore), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Add Widget</h4>\n                <form data-action=\"add-widget\" class=\"form-inline\" role=\"form\">\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productId\">Product ID</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productId\" placeholder=\"Product ID\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"buttonSelector\">Button Selector</label>\n                        <input type=\"text\" class=\"form-control\" name=\"buttonSelector\" placeholder=\"Button Selector\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"language\">Language</label>\n                        ";
+  buffer += "\n\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Add Widget</h4>\n                <form data-action=\"add-widget\" class=\"form-inline\" role=\"form\">\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productId\">Product ID</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productId\" placeholder=\"Product ID\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"buttonSelector\">Button Selector</label>\n                        <input type=\"text\" class=\"form-control\" name=\"buttonSelector\" placeholder=\"Button Selector\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productImageUrl\">Product Image URL</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productImageUrl\" placeholder=\"Product Image URL\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"language\">Language</label>\n                        ";
   if (helper = helpers.language_select_box) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.language_select_box); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -1673,10 +1679,24 @@ function program3(depth0,data,depth1) {
   if (helper = helpers.productId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.productId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" placeholder=\"Product ID\" required>\n            </div>\n            <div class=\"form-group\">\n                <label class=\"sr-only\" for=\"size\">Size</label>\n                <input type=\"text\" class=\"form-control\" name=\"size\" placeholder=\"Size\" required>\n            </div>\n            <div class=\"form-group\">\n                <label class=\"sr-only\" for=\"sizeAlias\">Size Alias</label>\n                <input type=\"text\" class=\"form-control\" name=\"sizeAlias\" placeholder=\"Size Alias\">\n            </div>\n            <div class=\"form-group\">\n                <label class=\"sr-only\" for=\"imageUrl\">Image URL</label>\n                <input type=\"text\" class=\"form-control\" name=\"imageUrl\" value=\""
-    + escapeExpression(((stack1 = (depth1 && depth1.ogpImageUrl)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" placeholder=\"Image URL\" required>\n            </div>\n            <button type=\"submit\" class=\"btn btn-default\">Purchase</button>\n        </form>\n        ";
+    + "\" placeholder=\"Product ID\" required>\n            </div>\n            <div class=\"form-group\">\n                <label class=\"sr-only\" for=\"size\">Size</label>\n                <input type=\"text\" class=\"form-control\" name=\"size\" placeholder=\"Size\" required>\n            </div>\n            <div class=\"form-group\">\n                <label class=\"sr-only\" for=\"sizeAlias\">Size Alias</label>\n                <input type=\"text\" class=\"form-control\" name=\"sizeAlias\" placeholder=\"Size Alias\">\n            </div>\n            <div class=\"form-group\">\n                <label class=\"sr-only\" for=\"imageUrl\">Image URL</label>\n                <input type=\"text\" class=\"form-control\" name=\"imageUrl\" value=\"";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.productImageUrl), {hash:{},inverse:self.programWithDepth(6, program6, data, depth1),fn:self.program(4, program4, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" placeholder=\"Image URL\" required>\n            </div>\n            <button type=\"submit\" class=\"btn btn-default\">Purchase</button>\n        </form>\n        ";
   return buffer;
+  }
+function program4(depth0,data) {
+  
+  var stack1, helper;
+  if (helper = helpers.productImageUrl) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.productImageUrl); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  return escapeExpression(stack1);
+  }
+
+function program6(depth0,data,depth2) {
+  
+  var stack1;
+  return escapeExpression(((stack1 = (depth2 && depth2.ogpImageUrl)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
   }
 
   buffer += "<div id=\"";
@@ -1726,10 +1746,6 @@ function program1(depth0,data) {
   else { helper = (depth0 && depth0.language); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
     + "</td>\n                    <td>";
-  if (helper = helpers.region) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.region); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</td>\n                    <td>";
   if (helper = helpers.storeId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.storeId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -1742,6 +1758,9 @@ function program1(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "</td>\n                    <td>\n                        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.validProduct), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                    </td>\n                    <td>\n                        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.validProduct), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                    </td>\n                </tr>\n                ";
   return buffer;
@@ -1761,6 +1780,26 @@ function program4(depth0,data) {
   }
 
 function program6(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n                            ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.productImageUrl), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                        ";
+  return buffer;
+  }
+function program7(depth0,data) {
+  
+  var buffer = "", stack1, helper;
+  buffer += "\n                                <a href=\"";
+  if (helper = helpers.productImageUrl) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.productImageUrl); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" target=\"_blank\" class=\"btn btn-xs btn-primary\">Show</a>\n                            ";
+  return buffer;
+  }
+
+function program9(depth0,data) {
   
   var buffer = "", stack1, helper;
   buffer += "\n                            <button class=\"btn btn-xs btn-primary\" data-toggle=\"widget\" data-target=\"";
@@ -1783,7 +1822,7 @@ function program6(depth0,data) {
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\">&times;</a>\n        </h3>\n    </div>\n    <div class=\"table-responsive\">\n        <table class=\"table table-striped\">\n            <thead>\n                <tr>\n                    <th>Product ID</th>\n                    <th>Button Selector</th>\n                    <th>Language</th>\n                    <th>Region</th>\n                    <th>Store ID</th>\n                    <th>StoreProduct ID</th>\n                    <th>Valid</th>\n                    <th>Open</th>\n                </tr>\n            </thead>\n            <tbody>\n                ";
+    + "\">&times;</a>\n        </h3>\n    </div>\n    <div class=\"table-responsive\">\n        <table class=\"table table-striped\">\n            <thead>\n                <tr>\n                    <th>Product ID</th>\n                    <th>Button Selector</th>\n                    <th>Language</th>\n                    <th>Store ID</th>\n                    <th>StoreProduct ID</th>\n                    <th>Valid</th>\n                    <th>Product Image URL</th>\n                    <th>Open</th>\n                </tr>\n            </thead>\n            <tbody>\n                ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.widgets), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            </tbody>\n        </table>\n    </div>\n</div>\n\n";

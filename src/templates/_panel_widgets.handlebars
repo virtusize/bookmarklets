@@ -12,10 +12,10 @@
                     <th>Product ID</th>
                     <th>Button Selector</th>
                     <th>Language</th>
-                    <th>Region</th>
                     <th>Store ID</th>
                     <th>StoreProduct ID</th>
                     <th>Valid</th>
+                    <th>Product Image URL</th>
                     <th>Open</th>
                 </tr>
             </thead>
@@ -25,10 +25,16 @@
                     <td>{{productId}}</td>
                     <td>{{buttonSelector}}</td>
                     <td>{{language}}</td>
-                    <td>{{region}}</td>
                     <td>{{storeId}}</td>
                     <td>{{storeProductId}}</td>
                     <td>{{#if validProduct}}{{validProduct}}{{else}}false{{/if}}</td>
+                    <td>
+                        {{#if validProduct}}
+                            {{#if productImageUrl}}
+                                <a href="{{productImageUrl}}" target="_blank" class="btn btn-xs btn-primary">Show</a>
+                            {{/if}}
+                        {{/if}}
+                    </td>
                     <td>
                         {{#if validProduct}}
                             <button class="btn btn-xs btn-primary" data-toggle="widget" data-target="{{productId}}">Open</button>
