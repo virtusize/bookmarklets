@@ -35,7 +35,7 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     banner: 'var Bookmarklet = (function(global) {\n"use strict";\nglobal = this;\n',
-                    footer: '$(function() { override.init();});\nreturn {override: override, ogp: ogp, Handlebars: Handlebars};}).apply({});'
+                    footer: 'override.init();\nreturn {override: override, ogp: ogp, Handlebars: Handlebars};}).apply({});'
                 },
                 src: ['lib/**/*.js', 'build/scripts/sources.js', 'build/templates/templates.js'],
                 dest: 'build/override.js'
