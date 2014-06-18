@@ -12,6 +12,10 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+### 0.2.2
+
+- Minor: more stability improvements. (hs)
+
 ### 0.2.1
 
 - Minor: Little updates to force style and load more reliable. (hs)
