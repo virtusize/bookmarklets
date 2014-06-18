@@ -12,6 +12,10 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+### 0.2.1
+
+- Minor: Little updates to force style and load more reliable. (hs)
+
 ### 0.2.0
 
 - Feature: Added productImageUrl to integrate and widget panels. (hs)
