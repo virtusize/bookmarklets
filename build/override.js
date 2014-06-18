@@ -10,7 +10,7 @@ global = this;
  * ======================================================================== */
 
 
-+function ($) {
+window.initCollapse = function ($) {
   'use strict';
 
   // COLLAPSE PUBLIC CLASS DEFINITION
@@ -180,7 +180,7 @@ global = this;
     Plugin.call($target, option)
   })
 
-}(jQuery);
+};
 
 /*!
 
@@ -713,16 +713,67 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
   return __module0__;
 })();
 
+/* ========================================================================
+ * Bootstrap: transition.js v3.1.1
+ * http://getbootstrap.com/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
+window.initTransition = function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  // http://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false, $el = this
+    $(this).one($.support.transition.end, function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+  })
+
+};
+
 var ogp, override;
 
 ogp = (function(ogp) {
-  var ogPrefixRegex, ogProperties, productPrefixRegex, productProperties;
+  var $, ogPrefixRegex, ogProperties, productPrefixRegex, productProperties;
+  $ = null;
   ogPrefixRegex = /(?:([\S]*):\s?)?http:\/\/ogp.me\/ns#/;
   productPrefixRegex = /(?:([\S]*):\s?)?http:\/\/ogp.me\/ns\/product\#/;
   ogProperties = ["url", "title", "image", "image:url", "image:width", "image:height", "description", "locale", "site_name"];
   productProperties = ["upc", "ean", "brand", "mfr_part_no", "size", "color", "availability", "category", "price:amount", "price:currency", "material", "pattern", "target_gender", "age_group"];
   ogp.parse = function() {
     var metas, ogData;
+    $ = window.jQueryVS;
     metas = $("meta");
     ogData = {};
     $.each(metas, function(index, meta) {
@@ -846,6 +897,8 @@ override = (function(override) {
     override.registerHandlebarsHelpers();
     return override.loadScript(override.jQueryCDN, function() {
       $ = window.jQueryVS = jQuery.noConflict(true);
+      window.initTransition($);
+      window.initCollapse($);
       override.injectStyle();
       override.injectMarkup();
       override.render();
