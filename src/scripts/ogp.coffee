@@ -1,4 +1,5 @@
 ogp = ((ogp) ->
+    $ = null
     ogPrefixRegex = /(?:([\S]*):\s?)?http:\/\/ogp.me\/ns#/
     productPrefixRegex = /(?:([\S]*):\s?)?http:\/\/ogp.me\/ns\/product\#/
     ogProperties = [
@@ -31,6 +32,7 @@ ogp = ((ogp) ->
 
 
     ogp.parse = ->
+        $ = window.jQueryVS
         metas = $("meta")
         ogData = {}
 

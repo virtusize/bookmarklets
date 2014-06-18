@@ -53,6 +53,8 @@ override = ((override) ->
 
         override.loadScript override.jQueryCDN, ->
             $ = window.jQueryVS = jQuery.noConflict(true)
+            window.initTransition($)
+            window.initCollapse($)
             override.injectStyle()
             override.injectMarkup()
             override.render()
