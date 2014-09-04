@@ -12,6 +12,12 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+
+
+### 0.2.3
+
+- Bugfix: Z index must be on a root element to work. (jt)
+
 ### 0.2.2
 
 - Minor: more stability improvements. (hs)
