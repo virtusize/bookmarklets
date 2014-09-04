@@ -14,6 +14,10 @@ Use list notation, and following prefixes:
 
 
 
+### 0.2.4
+
+- Bugfix: Z index must be on a root element AND every child to work. (jt)
+
 ### 0.2.3
 
 - Bugfix: Z index must be on a root element to work. (jt)
