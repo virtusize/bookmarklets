@@ -13,6 +13,9 @@ Use list notation, and following prefixes:
 ### NEXT RELEASE
 
 
+### 0.3.0
+
+- Feature: Added tooltip panel for PH preview control. (hs)
 
 ### 0.2.4
 
