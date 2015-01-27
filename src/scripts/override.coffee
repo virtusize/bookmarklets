@@ -207,6 +207,19 @@ override = ((override) ->
                 override.refresh '#panel-orders'
             , 300
 
+        override.div.on 'click', '#panel-tooltip [data-action="open-tooltip"]', (ev) ->
+            ev.preventDefault()
+            target = override.div.find(ev.target)
+            id = target.data('target')
+            widget = window[Virtusize].getWidget(id)
+            widget.setTooltipEnabled true
+            widget.setDebugTooltipData true
+            widget.checkPurchaseHistory()
+
+        override.div.on 'click', '#panel-tooltip [data-action="toggle-tooltip-style"]', (ev) ->
+            ev.preventDefault()
+            $('.vs-tooltip').toggleClass('vs-tooltip-light')
+
     override.render = ->
         override.registerHandlers()
 
@@ -298,6 +311,10 @@ override = ((override) ->
                  purchase:
                      id: 'panel-purchase'
                      title: 'Purchase'
+                 ,
+                 tooltip:
+                     id: 'panel-tooltip'
+                     title: 'Tooltip'
 
         if override.hasIntegrated() 
             $.extend panels.debug,
@@ -330,6 +347,9 @@ override = ((override) ->
                 ogpImageUrl: override.getOgpImage()
                 isDemoStore: window[Virtusize].apiKey is '15cc36e1d7dad62b8e11722ce1a245cb6c5e6692'
 
+            $.extend panels.tooltip,
+                widgets: window[Virtusize].widgets
+
         panels
 
     override.getPanelLinksData = ->
@@ -354,6 +374,10 @@ override = ((override) ->
                 panelLinks.push
                     id: 'panel-orders'
                     title: 'Orders'
+
+            panelLinks.push
+                id: 'panel-tooltip'
+                title: 'Tooltip'
 
             panelLinks.push
                 id: 'panel-debug'

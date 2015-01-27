@@ -24,17 +24,33 @@ directory called build.
 
     grunt watch
 
-## Update Gist
-For updating butschis gist, you got to be butschi. Next install gist gem "gem
-install gist". Then run the following command:
+## Development
+Use the normal HubFlow commands to create a feature branch. After you push the
+code to Github it will be available with a bookmarklet like this, if you change
+the `<branch>` to your feature branch:
 
-    gist build/override.min.js -u <hash-of-gist>
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','https://rawgit.com/virtusize/bookmarklets/<branch>/build/override.min.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+
+Alternatively you can run a SimpleHTTPServer locally like this:
+
+    sudo python -m SimpleHTTPServer 8001
+
+After that the bookmarklet is available from your local environment, but it
+will not run on HTTPS retailers. Change the URL inside the bookmarklet from
+rawgit.com to your local machine, for example like this:
+
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://hsdev.virtusize.com:8001/build/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+
+## Deployment
+Use the normal HubFlow commands to create a release. As soon as the release is
+finished and merged into master, the new version of the Bookmarklet will be
+available.
 
 ## Bookmarklet
 The bookmarklet has a few more requirements. First, it has a special format,
 since it should be URL encoded. It looks like this:
 
-    javascript:void((function()%20{var%20element=document.createElement('script');%20element.setAttribute('src',%20'https://rawgit.com/butschi/<hash-of-gist>/raw');element.setAttribute('id',%20'vs-bookmarklet');%20document.body.appendChild(element)})())
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','https://rawgit.com/virtusize/bookmarklets/master/build/override.min.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
 
 You notice that it is not referencing the raw gist file directly, but is going
 through a proxy: rawgit.com. This is due to the fact that gist does not set the
