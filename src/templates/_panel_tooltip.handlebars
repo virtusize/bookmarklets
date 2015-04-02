@@ -11,6 +11,7 @@
                 <tr>
                     <th>Product ID</th>
                     <th>Button Selector</th>
+                    <th>Desktop/Mobile</th>
                     <th>Open Tooltip</th>
                     <th>Toggle Style</th>
                 </tr>
@@ -20,6 +21,16 @@
                 <tr>
                     <td>{{productId}}</td>
                     <td>{{buttonSelector}}</td>
+                    <td>
+                        <div id="mobile-widget-buttons" class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-xs btn-primary{{ desktopButtonClass }}" data-value="false">
+                                <input type="radio" name="mobileWidget"/> Desktop
+                            </label>
+                            <label class="btn btn-xs btn-primary{{ mobileButtonClass }}" data-value="true">
+                                <input type="radio" name="mobileWidget"/> Mobile
+                            </label>
+                        </div>
+                    </td>
                     <td>
                         {{#if validProduct}}
                             <button class="btn btn-xs btn-primary" data-action="open-tooltip" data-target="{{productId}}">Open Tooltip</button>

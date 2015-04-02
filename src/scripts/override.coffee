@@ -213,12 +213,22 @@ override = ((override) ->
             id = target.data('target')
             widget = window[Virtusize].getWidget(id)
             widget.setTooltipEnabled true
-            widget.setDebugTooltipData true
+
+            widget.on 'backend-checked-purchase-history', ->
+                @setDebugTooltipData()
+                @openTooltip()
+
             widget.checkPurchaseHistory()
 
         override.div.on 'click', '#panel-tooltip [data-action="toggle-tooltip-style"]', (ev) ->
             ev.preventDefault()
             $('.vs-tooltip').toggleClass('vs-tooltip-light')
+
+        override.div.on 'click', '#panel-tooltip #mobile-widget-buttons .btn', (ev) ->
+            ev.preventDefault()
+            window[Virtusize].setMobile($(@).data('value'))
+            $('#panel-tooltip #mobile-widget-buttons .btn').removeClass 'active'
+            $(@).addClass 'active'
 
     override.render = ->
         override.registerHandlers()
@@ -314,7 +324,7 @@ override = ((override) ->
                  ,
                  tooltip:
                      id: 'panel-tooltip'
-                     title: 'Tooltip'
+                     title: 'Settings'
 
         if override.hasIntegrated() 
             $.extend panels.debug,
@@ -377,7 +387,7 @@ override = ((override) ->
 
             panelLinks.push
                 id: 'panel-tooltip'
-                title: 'Tooltip'
+                title: 'Settings'
 
             panelLinks.push
                 id: 'panel-debug'
@@ -475,7 +485,7 @@ override = ((override) ->
         iframe = $('iframe[name="' + override.utilIFrameName + '"]')
         host = iframe.attr('src').match(/(^.*)\/integration\/v3/)[1]
         utilIFrame = iframe[0].contentWindow
-        ev = 
+        ev = 
             url: '/integration/v3/destroy-session-hash?apiKey=' + window[Virtusize].apiKey
             type: 'POST'
             name: 'integration-reset-bid'
@@ -585,7 +595,11 @@ override = ((override) ->
             new Handlebars.SafeString str
             
 
+        Handlebars.registerHelper 'mobileButtonClass', () ->
+            if @mobile then ' active' else ''
 
+        Handlebars.registerHelper 'desktopButtonClass', () ->
+            unless @mobile then ' active' else ''
 
     override
 )(override or {})

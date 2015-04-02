@@ -12,6 +12,8 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+- Feature: Added possibility to switch between mobile and desktop widget. (hs)
+- Bugfix: Fixed the PH preview popup debug mode. Kind of. (hs)
 
 ### 0.3.0
 
