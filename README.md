@@ -31,15 +31,38 @@ the `<branch>` to your feature branch:
 
     javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','https://rawgit.com/virtusize/bookmarklets/<branch>/build/override.min.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
 
-Alternatively you can run a SimpleHTTPServer locally like this:
+Alternatively you can run a server on port 9001 locally like this:
 
-    sudo python -m SimpleHTTPServer 8001
+    # Just run the server
+    grunt connect:server
+
+    # Build the project and run the server
+    grunt serve
 
 After that the bookmarklet is available from your local environment, but it
 will not run on HTTPS retailers. Change the URL inside the bookmarklet from
 rawgit.com to your local machine, for example like this:
 
-    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://hsdev.virtusize.com:8001/build/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://hsdev.virtusize.com:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+
+## Docker
+
+You can build the bookmarklets as a Docker image like this:
+
+    docker build -t bookmarklets .
+
+Then run the container and expose its port on the host:
+
+    docker run -p 9001:9001 -d bookmarklets
+
+It will start up the server so you can configure a bookmarklet like the
+following. Replace the DOCKER_MACHINE variable with the `docker-machine ip`:
+
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://DOCKER_MACHINE:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+
+    # Example, if you have a /etc/hosts entry for your machine:
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://docker.virtusize.com:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+
 
 ## Deployment
 Use the normal HubFlow commands to create a release. As soon as the release is

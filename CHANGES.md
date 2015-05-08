@@ -12,6 +12,13 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+### 0.4.0
+
+- Feature: Dockerized. (hs)
+- Feature: Added Grunt connect server for simplicity. (hs)
+- Feature: Added possibility to switch between mobile and desktop widget. (hs)
+- Bugfix: Fixed the PH preview popup debug mode. Kind of. Might have to click
+  the button twice. (hs)
 
 ### 0.3.0
 
