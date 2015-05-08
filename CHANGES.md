@@ -12,6 +12,8 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+### 0.4.0
+
 - Feature: Dockerized. (hs)
 - Feature: Added Grunt connect server for simplicity. (hs)
 - Feature: Added possibility to switch between mobile and desktop widget. (hs)
