@@ -1,0 +1,23 @@
+*.log
+*.pyc
+*.db
+*.rdb
+*.swp
+*.swo
+*.zip
+*.orig
+*.cfg
+*.tox
+*.lock
+*.cache
+.DS_Store
+
+# Ignore Vim swap files.
+*~
+
+.git
+.gitignore
+.dockerignore
+Dockerfile
+.idea
+

@@ -1079,12 +1079,21 @@ override = (function(override) {
       id = target.data('target');
       widget = window[Virtusize].getWidget(id);
       widget.setTooltipEnabled(true);
-      widget.setDebugTooltipData(true);
+      widget.on('backend-checked-purchase-history', function() {
+        this.setDebugTooltipData();
+        return this.openTooltip();
+      });
       return widget.checkPurchaseHistory();
     });
-    return override.div.on('click', '#panel-tooltip [data-action="toggle-tooltip-style"]', function(ev) {
+    override.div.on('click', '#panel-tooltip [data-action="toggle-tooltip-style"]', function(ev) {
       ev.preventDefault();
       return $('.vs-tooltip').toggleClass('vs-tooltip-light');
+    });
+    return override.div.on('click', '#panel-tooltip #mobile-widget-buttons .btn', function(ev) {
+      ev.preventDefault();
+      window[Virtusize].setMobile($(this).data('value'));
+      $('#panel-tooltip #mobile-widget-buttons .btn').removeClass('active');
+      return $(this).addClass('active');
     });
   };
   override.render = function() {
@@ -1196,7 +1205,7 @@ override = (function(override) {
       },
       tooltip: {
         id: 'panel-tooltip',
-        title: 'Tooltip'
+        title: 'Settings'
       }
     };
     if (override.hasIntegrated()) {
@@ -1264,7 +1273,7 @@ override = (function(override) {
       }
       panelLinks.push({
         id: 'panel-tooltip',
-        title: 'Tooltip'
+        title: 'Settings'
       });
       panelLinks.push({
         id: 'panel-debug',
@@ -1375,11 +1384,11 @@ override = (function(override) {
     iframe = $('iframe[name="' + override.utilIFrameName + '"]');
     host = iframe.attr('src').match(/(^.*)\/integration\/v3/)[1];
     utilIFrame = iframe[0].contentWindow;
-    ev =  ({
+    ev = {
       url: '/integration/v3/destroy-session-hash?apiKey=' + window[Virtusize].apiKey,
       type: 'POST',
       name: 'integration-reset-bid'
-    });
+    };
     utilIFrame.postMessage(JSON.stringify(ev), host);
     return window.setTimeout(function() {
       return override.loadIntegrationScript(override.detectEnvironment(), '#panel-purchase');
@@ -1476,7 +1485,7 @@ override = (function(override) {
     }
   };
   override.registerHandlebarsHelpers = function() {
-    return Handlebars.registerHelper('language_select_box', function() {
+    Handlebars.registerHelper('language_select_box', function() {
       var lang, str, _i, _len, _ref;
       str = '<select name="language" class="form-control">';
       _ref = override.languages;
@@ -1486,6 +1495,20 @@ override = (function(override) {
       }
       str += '</select>';
       return new Handlebars.SafeString(str);
+    });
+    Handlebars.registerHelper('mobileButtonClass', function() {
+      if (this.mobile) {
+        return ' active';
+      } else {
+        return '';
+      }
+    });
+    return Handlebars.registerHelper('desktopButtonClass', function() {
+      if (!this.mobile) {
+        return ' active';
+      } else {
+        return '';
+      }
     });
   };
   return override;
@@ -1819,7 +1842,15 @@ function program1(depth0,data) {
   if (helper = helpers.buttonSelector) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.buttonSelector); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</td>\n                    <td>\n                        ";
+    + "</td>\n                    <td>\n                        <div id=\"mobile-widget-buttons\" class=\"btn-group\" data-toggle=\"buttons\">\n                            <label class=\"btn btn-xs btn-primary";
+  if (helper = helpers.desktopButtonClass) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.desktopButtonClass); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" data-value=\"false\">\n                                <input type=\"radio\" name=\"mobileWidget\"/> Desktop\n                            </label>\n                            <label class=\"btn btn-xs btn-primary";
+  if (helper = helpers.mobileButtonClass) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.mobileButtonClass); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" data-value=\"true\">\n                                <input type=\"radio\" name=\"mobileWidget\"/> Mobile\n                            </label>\n                        </div>\n                    </td>\n                    <td>\n                        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.validProduct), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                    </td>\n                    <td>\n                        ";
@@ -1862,7 +1893,7 @@ function program4(depth0,data) {
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\">&times;</a>\n        </h3>\n    </div>\n    <div class=\"table-responsive\">\n        <table class=\"table table-striped\">\n            <thead>\n                <tr>\n                    <th>Product ID</th>\n                    <th>Button Selector</th>\n                    <th>Open Tooltip</th>\n                    <th>Toggle Style</th>\n                </tr>\n            </thead>\n            <tbody>\n                ";
+    + "\">&times;</a>\n        </h3>\n    </div>\n    <div class=\"table-responsive\">\n        <table class=\"table table-striped\">\n            <thead>\n                <tr>\n                    <th>Product ID</th>\n                    <th>Button Selector</th>\n                    <th>Desktop/Mobile</th>\n                    <th>Open Tooltip</th>\n                    <th>Toggle Style</th>\n                </tr>\n            </thead>\n            <tbody>\n                ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.widgets), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            </tbody>\n        </table>\n    </div>\n</div>\n\n";
