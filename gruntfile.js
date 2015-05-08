@@ -87,6 +87,16 @@ module.exports = function(grunt) {
                 src: 'build/*.js',
                 dest: './'
             }
+        },
+        connect: {
+            server: {
+                options: {
+                    hostname: '0.0.0.0',
+                    port: 9001,
+                    base: 'build',
+                    keepalive: true
+                }
+            }
         }
     });
 
@@ -94,11 +104,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-include-replace');
 
     grunt.registerTask('default', ['handlebars', 'coffee', 'concat', 'uglify', 'less', 'cssmin', 'includereplace']);
+    grunt.registerTask('serve', ['default', 'connect:server']);
 };
 
