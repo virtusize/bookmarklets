@@ -12,6 +12,8 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+- Refactor: Updated path to integration file, now that it's standalone. (ab)
+
 ### 0.4.0
 
 - Feature: Dockerized. (hs)
