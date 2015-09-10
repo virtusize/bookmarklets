@@ -439,7 +439,7 @@ override = ((override) ->
             apiKey = override.div.find('#integrate-apiKey').val()
 
         script = $('<script type="text/javascript"></script>')
-        script.text override.snippet + '(window,document,"script","' + override.envs[env] + '/integration/v3.js?source","vs");'
+        script.text override.snippet + '(window,document,"script","' + override.envs[env] + '/integration/v3.source.js","vs");'
         $('head').append script
 
         window[Virtusize].setApiKey(if override.previousVs? then override.previousVs.apiKey else apiKey)
