@@ -12,6 +12,7 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+- Feature: Added dev server as integration option. (hs)
 - Refactor: Updated path to integration file, now that it's standalone. (ab)
 
 ### 0.4.0
