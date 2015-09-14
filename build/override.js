@@ -886,6 +886,7 @@ override = (function(override) {
   override.envs = {
     staging: "staging.virtusize.com",
     development: "local.virtusize.com:5000",
+    local: "local.virtusize.com",
     demo: "demo.virtusize.com",
     dev: "dev.virtusize.com",
     translations: "translations.virtusize.com",
@@ -1175,6 +1176,8 @@ override = (function(override) {
       return 'demo';
     } else if (src.match(/dev\.virtusize\.com/)) {
       return 'dev';
+    } else if (src.match(/local\.virtusize\.com/)) {
+      return 'local';
     } else {
       return 'development';
     }
@@ -1646,7 +1649,7 @@ function program6(depth0,data) {
     + "\">&times;</a>\n        </h3>\n    </div>\n\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Environment <span class=\"vs-status\"></span></h4>\n            </div>\n\n            ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.askForApiKey), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n            <div class=\"col-md-6\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"production\" class=\"btn btn-default\">Production</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"staging\" class=\"btn btn-default\">Staging</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"dev\" class=\"btn btn-default\">Dev</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"development\" class=\"btn btn-default\">Development</button>\n                </div>\n            </div>\n        </div>\n\n        ";
+  buffer += "\n\n            <div class=\"col-md-6\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"production\" class=\"btn btn-default\">Production</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"staging\" class=\"btn btn-default\">Staging</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"dev\" class=\"btn btn-default\">Dev</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"local\" class=\"btn btn-default\">Local</button>\n                </div>\n            </div>\n        </div>\n\n        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isDemoStore), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Add Widget</h4>\n                <form data-action=\"add-widget\" class=\"form-inline\" role=\"form\">\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productId\">Product ID</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productId\" placeholder=\"Product ID\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"buttonSelector\">Button Selector</label>\n                        <input type=\"text\" class=\"form-control\" name=\"buttonSelector\" placeholder=\"Button Selector\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productImageUrl\">Product Image URL</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productImageUrl\" placeholder=\"Product Image URL\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"language\">Language</label>\n                        ";

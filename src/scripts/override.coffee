@@ -11,6 +11,7 @@ override = ((override) ->
     override.envs = 
         staging: "staging.virtusize.com"
         development: "local.virtusize.com:5000"
+        local: "local.virtusize.com"
         demo: "demo.virtusize.com"
         dev: "dev.virtusize.com"
         translations: "translations.virtusize.com"
@@ -297,6 +298,8 @@ override = ((override) ->
             'demo'
         else if src.match /dev\.virtusize\.com/
             'dev'
+        else if src.match /local\.virtusize\.com/
+            'local'
         else 
             'development'
 

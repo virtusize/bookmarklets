@@ -12,6 +12,8 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+- Feature: Added local docker domain for integration. (hs)
+
 ### 0.5.0
 
 - Feature: Added dev server as integration option. (hs)
