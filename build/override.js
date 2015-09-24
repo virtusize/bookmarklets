@@ -886,11 +886,10 @@ override = (function(override) {
   override.envs = {
     staging: "staging.virtusize.com",
     development: "local.virtusize.com:5000",
-    local: "local.virtusize.com",
     demo: "demo.virtusize.com",
     dev: "dev.virtusize.com",
     translations: "translations.virtusize.com",
-    production: "api.virtusize.com"
+    production: "www.virtusize.com"
   };
   override.languages = ['default', 'en', 'de', 'es', 'fr', 'it', 'ja', 'nl', 'pt', 'sv'];
   regions = ["default", "AT", "AU", "DE", "DK", "ES", "EU", "FI", "FR", "GB", "IT", "JP", "NL", "NO", "RU", "SE", "US"];
@@ -903,8 +902,17 @@ override = (function(override) {
       override.injectStyle();
       override.injectMarkup();
       override.render();
-      return override.hide(true);
+      override.hide(true);
+      return override.initParams();
     });
+  };
+  override.initParams = function() {
+    var url;
+    url = override.getUrlParam('vsUrl');
+    if (url != null) {
+      override.envs['custom'] = url;
+      return override.loadIntegrationScript('custom', false);
+    }
   };
   override.injectStyle = function() {
     var style;
@@ -1109,7 +1117,7 @@ override = (function(override) {
     override.renderPanels();
     override.setIntegrationStatus();
     override.show(true);
-    if (backToPanel != null) {
+    if ((backToPanel != null) && backToPanel) {
       return override.showPanel(backToPanel, true);
     }
   };
@@ -1166,20 +1174,12 @@ override = (function(override) {
     return (typeof Virtusize !== "undefined" && Virtusize !== null) && typeof Virtusize === 'string' && 'integrationVersion' in window[Virtusize];
   };
   override.detectEnvironment = function() {
-    var src;
-    src = $('#vs-integration').attr('src');
-    if (src.match(/api\.virtusize\.com/)) {
-      return 'production';
-    } else if (src.match(/staging\.virtusize\.com/)) {
-      return 'staging';
-    } else if (src.match(/demo\.virtusize\.com/)) {
-      return 'demo';
-    } else if (src.match(/dev\.virtusize\.com/)) {
-      return 'dev';
-    } else if (src.match(/local\.virtusize\.com/)) {
-      return 'local';
+    var m;
+    m = $('#vs-integration').attr('src').match(/https?\:\/\/(.*)\.virtusize\.com/);
+    if (m) {
+      return m[1];
     } else {
-      return 'development';
+      return 'other';
     }
   };
   override.getPanelData = function() {
@@ -1327,6 +1327,7 @@ override = (function(override) {
     } else {
       apiKey = override.div.find('#integrate-apiKey').val();
     }
+    console.log('Integrating with: ' + override.envs[env]);
     script = $('<script type="text/javascript"></script>');
     script.text(override.snippet + '(window,document,"script","' + override.envs[env] + '/integration/v3.source.js","vs");');
     $('head').append(script);
@@ -1342,25 +1343,25 @@ override = (function(override) {
     return $("iframe[name=\"virtusize-util-iframe\"]").remove();
   };
   override.removeButtonEventHandlers = function(vs) {
-    var productId, ref, results, widget;
+    var productId, ref, results1, widget;
     ref = vs.widgets;
-    results = [];
+    results1 = [];
     for (productId in ref) {
       widget = ref[productId];
       widget.buttons.unbind("click.virtusize");
-      results.push(widget.buttons.hide());
+      results1.push(widget.buttons.hide());
     }
-    return results;
+    return results1;
   };
   override.addAllWidgets = function(vs) {
-    var productId, ref, results, widget;
+    var productId, ref, results1, widget;
     ref = vs.widgets;
-    results = [];
+    results1 = [];
     for (productId in ref) {
       widget = ref[productId];
-      results.push(window[Virtusize].addWidget(override.widgetToObject(widget)));
+      results1.push(window[Virtusize].addWidget(override.widgetToObject(widget)));
     }
-    return results;
+    return results1;
   };
   override.widgetToObject = function(widget) {
     return {
@@ -1514,6 +1515,17 @@ override = (function(override) {
       }
     });
   };
+  override.getUrlParam = function(name) {
+    var regex, results;
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+    results = regex.exec(location.search);
+    if (results != null) {
+      return decodeURIComponent(results[1].replace(/\+/g, " "));
+    } else {
+      return null;
+    }
+  };
   return override;
 })(override || {});
 
@@ -1649,7 +1661,7 @@ function program6(depth0,data) {
     + "\">&times;</a>\n        </h3>\n    </div>\n\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Environment <span class=\"vs-status\"></span></h4>\n            </div>\n\n            ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.askForApiKey), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n            <div class=\"col-md-6\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"production\" class=\"btn btn-default\">Production</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"staging\" class=\"btn btn-default\">Staging</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"dev\" class=\"btn btn-default\">Dev</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"local\" class=\"btn btn-default\">Local</button>\n                </div>\n            </div>\n        </div>\n\n        ";
+  buffer += "\n\n            <div class=\"col-md-6\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"production\" class=\"btn btn-default\">Production</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"staging\" class=\"btn btn-default\">Staging</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"dev\" class=\"btn btn-default\">Dev</button>\n                </div>\n            </div>\n        </div>\n\n        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isDemoStore), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Add Widget</h4>\n                <form data-action=\"add-widget\" class=\"form-inline\" role=\"form\">\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productId\">Product ID</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productId\" placeholder=\"Product ID\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"buttonSelector\">Button Selector</label>\n                        <input type=\"text\" class=\"form-control\" name=\"buttonSelector\" placeholder=\"Button Selector\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productImageUrl\">Product Image URL</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productImageUrl\" placeholder=\"Product Image URL\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"language\">Language</label>\n                        ";
