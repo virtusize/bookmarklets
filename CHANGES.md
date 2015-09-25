@@ -12,6 +12,8 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+### 0.6.0
+
 - Feature: Added automatic vsUrl to integrate on load. (hs)
 
 ### 0.5.0
