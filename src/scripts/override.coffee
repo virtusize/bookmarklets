@@ -8,13 +8,15 @@ override = ((override) ->
     override.utilIFrameName = "virtusize-util-iframe"
     override.tldRegex = /[^.]*\.([^.]*|..\...|...\...)$/
     override.bidCookieKey = "vs.bid"
+
     override.envs = 
         staging: "staging.virtusize.com"
         development: "local.virtusize.com:5000"
         demo: "demo.virtusize.com"
         dev: "dev.virtusize.com"
         translations: "translations.virtusize.com"
-        production: "api.virtusize.com"
+        production: "www.virtusize.com"
+
     override.languages = [
         'default'
         'en'
@@ -59,6 +61,14 @@ override = ((override) ->
             override.injectMarkup()
             override.render()
             override.hide true
+            override.initParams()
+
+    override.initParams = ->
+        url = override.getUrlParam('vsUrl')
+        if url?
+            override.envs['custom'] = url
+            override.loadIntegrationScript 'custom', false
+
 
     override.injectStyle = ->
         style = $('<style id="virtusize-bookmarklet-styles"></style>')
@@ -245,7 +255,7 @@ override = ((override) ->
         override.setIntegrationStatus()
         override.show true
 
-        if backToPanel?
+        if backToPanel? and backToPanel
             override.showPanel(backToPanel, true)
         
     override.renderNav = ->
@@ -288,17 +298,9 @@ override = ((override) ->
         Virtusize? and typeof Virtusize is 'string' and 'integrationVersion' of window[Virtusize]
 
     override.detectEnvironment = ->
-        src = $('#vs-integration').attr 'src'
-        if src.match /api\.virtusize\.com/
-            'production'
-        else if src.match /staging\.virtusize\.com/
-            'staging'
-        else if src.match /demo\.virtusize\.com/
-            'demo'
-        else if src.match /dev\.virtusize\.com/
-            'dev'
-        else 
-            'development'
+        m = $('#vs-integration').attr('src').match /https?\:\/\/(.*)\.virtusize\.com/
+
+        if m then m[1] else 'other'
 
     override.getPanelData = ->
         panels = integrate:
@@ -437,6 +439,8 @@ override = ((override) ->
             window[Virtusize] = null
         else
             apiKey = override.div.find('#integrate-apiKey').val()
+
+        console.log 'Integrating with: ' + override.envs[env]
 
         script = $('<script type="text/javascript"></script>')
         script.text override.snippet + '(window,document,"script","' + override.envs[env] + '/integration/v3.source.js","vs");'
@@ -600,6 +604,15 @@ override = ((override) ->
 
         Handlebars.registerHelper 'desktopButtonClass', () ->
             unless @mobile then ' active' else ''
+
+
+    override.getUrlParam = (name) ->
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
+        regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
+        results = regex.exec(location.search)
+
+        if results? then decodeURIComponent(results[1].replace(/\+/g, " ")) else null
+
 
     override
 )(override or {})

@@ -1,4 +1,4 @@
-FROM node
+FROM node:0.12
 
 MAINTAINER hannes@virtusize.com
 
