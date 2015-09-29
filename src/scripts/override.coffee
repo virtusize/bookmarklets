@@ -11,11 +11,12 @@ override = ((override) ->
 
     override.envs = 
         staging: "staging.virtusize.com"
-        development: "local.virtusize.com:5000"
+        local: "local.virtusize.com"
         demo: "demo.virtusize.com"
         dev: "dev.virtusize.com"
         translations: "translations.virtusize.com"
-        production: "www.virtusize.com"
+        api: "api.virtusize.com"
+        www: "www.virtusize.com"
 
     override.languages = [
         'default'
@@ -298,9 +299,12 @@ override = ((override) ->
         Virtusize? and typeof Virtusize is 'string' and 'integrationVersion' of window[Virtusize]
 
     override.detectEnvironment = ->
-        m = $('#vs-integration').attr('src').match /https?\:\/\/(.*)\.virtusize\.com/
+        m = $('#vs-integration').attr('src').match /https?\:\/\/(.*\.virtusize\.com)/
 
-        if m then m[1] else 'other'
+        for k,v of override.envs
+            return k if v == m[1]
+
+        'other'
 
     override.getPanelData = ->
         panels = integrate:
