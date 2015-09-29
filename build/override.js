@@ -885,11 +885,12 @@ override = (function(override) {
   override.bidCookieKey = "vs.bid";
   override.envs = {
     staging: "staging.virtusize.com",
-    development: "local.virtusize.com:5000",
+    local: "local.virtusize.com",
     demo: "demo.virtusize.com",
     dev: "dev.virtusize.com",
     translations: "translations.virtusize.com",
-    production: "www.virtusize.com"
+    api: "api.virtusize.com",
+    www: "www.virtusize.com"
   };
   override.languages = ['default', 'en', 'de', 'es', 'fr', 'it', 'ja', 'nl', 'pt', 'sv'];
   regions = ["default", "AT", "AU", "DE", "DK", "ES", "EU", "FI", "FR", "GB", "IT", "JP", "NL", "NO", "RU", "SE", "US"];
@@ -1174,13 +1175,16 @@ override = (function(override) {
     return (typeof Virtusize !== "undefined" && Virtusize !== null) && typeof Virtusize === 'string' && 'integrationVersion' in window[Virtusize];
   };
   override.detectEnvironment = function() {
-    var m;
-    m = $('#vs-integration').attr('src').match(/https?\:\/\/(.*)\.virtusize\.com/);
-    if (m) {
-      return m[1];
-    } else {
-      return 'other';
+    var k, m, ref, v;
+    m = $('#vs-integration').attr('src').match(/https?\:\/\/(.*\.virtusize\.com)/);
+    ref = override.envs;
+    for (k in ref) {
+      v = ref[k];
+      if (v === m[1]) {
+        return k;
+      }
     }
+    return 'other';
   };
   override.getPanelData = function() {
     var panels;
@@ -1661,7 +1665,7 @@ function program6(depth0,data) {
     + "\">&times;</a>\n        </h3>\n    </div>\n\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Environment <span class=\"vs-status\"></span></h4>\n            </div>\n\n            ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.askForApiKey), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n            <div class=\"col-md-6\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"production\" class=\"btn btn-default\">Production</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"staging\" class=\"btn btn-default\">Staging</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"dev\" class=\"btn btn-default\">Dev</button>\n                </div>\n            </div>\n        </div>\n\n        ";
+  buffer += "\n\n            <div class=\"col-md-6\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"api\" class=\"btn btn-default\">Production</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"staging\" class=\"btn btn-default\">Staging</button>\n                    <button type=\"button\" data-action=\"integrate-env\" data-target=\"dev\" class=\"btn btn-default\">Dev</button>\n                </div>\n            </div>\n        </div>\n\n        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isDemoStore), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h4>Add Widget</h4>\n                <form data-action=\"add-widget\" class=\"form-inline\" role=\"form\">\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productId\">Product ID</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productId\" placeholder=\"Product ID\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"buttonSelector\">Button Selector</label>\n                        <input type=\"text\" class=\"form-control\" name=\"buttonSelector\" placeholder=\"Button Selector\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"productImageUrl\">Product Image URL</label>\n                        <input type=\"text\" class=\"form-control\" name=\"productImageUrl\" placeholder=\"Product Image URL\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label class=\"sr-only\" for=\"language\">Language</label>\n                        ";
