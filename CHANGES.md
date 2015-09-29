@@ -12,6 +12,10 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+### 0.6.1
+
+- Bugfix: Was not integrating with custom urls correctly. (hs)
+
 ### 0.6.0
 
 - Feature: Added automatic vsUrl to integrate on load. (hs)
