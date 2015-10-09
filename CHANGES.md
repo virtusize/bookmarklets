@@ -12,6 +12,11 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+- Refactor: Updated Dockerfile. (ab)
+- Docs: Updated readme. (ab)
+- Feature: Added basic Makefile. (ab)
+- Feature: Added CI config. (ab)
+
 ### 0.6.1
 
 - Bugfix: Was not integrating with custom urls correctly. (hs)
