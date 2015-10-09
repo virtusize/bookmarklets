@@ -42,6 +42,7 @@ rawgit.com to your local machine, for example like this:
 
     javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://hsdev.virtusize.com:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
 
+
 ## Docker
 
 You can build the bookmarklets as a Docker image like this:
