@@ -12,6 +12,10 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+- Docs: Updated readme. (ab)
+- Feature: Added basic makefile. (ab)
+- Feature: Added CI config. (ab)
+
 ### 0.6.1
 
 - Bugfix: Was not integrating with custom urls correctly. (hs)
