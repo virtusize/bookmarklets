@@ -1,16 +1,12 @@
-FROM node:0.12
-
-MAINTAINER hannes@virtusize.com
-
-RUN npm install -g grunt-cli
+FROM node:4.0
 
 WORKDIR /bookmarklets
-ADD package.json package.json
-RUN npm install
+COPY . /bookmarklets
 
-ADD . /bookmarklets
-RUN grunt
+RUN npm install -gq grunt-cli \
+    && npm install -q \
+    && make
 
-EXPOSE "9001"
+EXPOSE 9001
 
-CMD ["grunt", "connect:server"]
+CMD ["make", "serve"]
