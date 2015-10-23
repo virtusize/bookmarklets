@@ -5,7 +5,7 @@ machine:
 dependencies:
   override:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-    - curl -k -L -o Buildfile https://gist.githubusercontent.com/vs-ab/d6481cfde2ba49635350/raw
+    - curl -k -L -o Buildfile https://raw.githubusercontent.com/virtusize/build_script/master/Buildfile
     - make -f Buildfile build
 
 test:
