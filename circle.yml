@@ -1,0 +1,19 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+    - curl -k -L -o Buildfile https://raw.githubusercontent.com/virtusize/build_script/master/Buildfile
+    - make -f Buildfile build
+
+test:
+  override:
+    - echo 'LGTM'
+
+deployment:
+  docker:
+    branch: /.*/
+    commands:
+      - make -f Buildfile push

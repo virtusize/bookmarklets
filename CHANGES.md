@@ -12,6 +12,15 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+
+### 0.7.0
+
+- Feature: Replaced deprecated environments with develop. (ab)
+- Refactor: Updated Dockerfile. (ab)
+- Docs: Updated readme. (ab)
+- Feature: Added basic Makefile. (ab)
+- Feature: Added CI config. (ab)
+
 ### 0.6.1
 
 - Bugfix: Was not integrating with custom urls correctly. (hs)
@@ -60,4 +69,3 @@ Use list notation, and following prefixes:
 ### 0.1.0
 
 - Feature: initial release of bookmarklet. (hs)
-

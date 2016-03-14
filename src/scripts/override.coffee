@@ -2,18 +2,16 @@ override = ((override) ->
     $ = null
     override.div = null
     override.styles = '@@include("styles/override.min.css")'
-    override.jQueryCDN = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
-    override.bootstrapCDN = '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'
+    override.jQueryCDN = 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
+    override.bootstrapCDN = 'https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'
     override.snippet = '!function(a,b,c,d,e,f,g){var h,i,j,k;for(a.Virtusize=e,a[e]=a[e]||[],a[e].methods=["setApiKey","setRegion","setLanguage","setWidgetOverlayColor","addWidget","ready","on","setAvailableSizes","setSizeAliases","addOrder","setUserId"],a[e].factory=function(b){return function(){var c;return c=Array.prototype.slice.call(arguments),c.unshift(b),a[e].push(c),a[e]}},k=a[e].methods,i=0,j=k.length;j>i;i++)h=k[i],a[e][h]=a[e].factory(h);a[e].snippetVersion="3.0.2",f=b.createElement(c),g=b.getElementsByTagName(c)[0],f.async=1,f.src=("https:"===a.location.protocol?"https://":"http://")+d,f.id="vs-integration",g.parentNode.insertBefore(f,g)}'
     override.utilIFrameName = "virtusize-util-iframe"
     override.tldRegex = /[^.]*\.([^.]*|..\...|...\...)$/
     override.bidCookieKey = "vs.bid"
 
-    override.envs = 
+    override.envs =
         staging: "staging.virtusize.com"
-        local: "local.virtusize.com"
-        demo: "demo.virtusize.com"
-        dev: "dev.virtusize.com"
+        develop: "develop.virtusize.com"
         translations: "translations.virtusize.com"
         api: "api.virtusize.com"
         www: "www.virtusize.com"
@@ -102,7 +100,7 @@ override = ((override) ->
         setTimeout ->
             override.show()
         , 200
-        
+
     override.close = ->
         override.hide()
         setTimeout ->
@@ -149,7 +147,7 @@ override = ((override) ->
 
     override.togglePanel = (panel) ->
         panel = override.div.find(panel)
-        
+
         if panel.hasClass 'in'
             override.hidePanel panel
         else
@@ -258,7 +256,7 @@ override = ((override) ->
 
         if backToPanel? and backToPanel
             override.showPanel(backToPanel, true)
-        
+
     override.renderNav = ->
         override.div.html global.templates["src/templates/bookmarklet.handlebars"] panelLinks: override.getPanelLinksData()
 
@@ -332,7 +330,7 @@ override = ((override) ->
                      id: 'panel-tooltip'
                      title: 'Settings'
 
-        if override.hasIntegrated() 
+        if override.hasIntegrated()
             $.extend panels.debug,
                 apiKey: window[Virtusize].apiKey
                 bid: window[Virtusize].bid
@@ -403,7 +401,7 @@ override = ((override) ->
                 id: 'panel-integrate'
                 title: 'Integrate'
 
-        panelLinks 
+        panelLinks
 
     override.loadScript = (uri, callback) ->
         s = "script"
@@ -412,20 +410,20 @@ override = ((override) ->
         script.async = true
         script.type = "text/javascript"
         script.src = uri
-        
+
         # Attach handlers for all browsers
         script.onload = script.onreadystatechange = (ignore, isAbort) ->
             if isAbort or not script.readyState or /loaded|complete/.test(script.readyState)
-                
+
                 # Handle memory leak in IE
                 script.onload = script.onreadystatechange = null
-                
+
                 # Remove the script
                 script.parentNode.removeChild script if script.parentNode
-                
+
                 # Dereference the script
                 script = `undefined`
-                
+
                 # Callback if not abort
                 callback() unless isAbort
 
@@ -493,7 +491,7 @@ override = ((override) ->
         iframe = $('iframe[name="' + override.utilIFrameName + '"]')
         host = iframe.attr('src').match(/(^.*)\/integration\/v3/)[1]
         utilIFrame = iframe[0].contentWindow
-        ev = 
+        ev =
             url: '/integration/v3/destroy-session-hash?apiKey=' + window[Virtusize].apiKey
             type: 'POST'
             name: 'integration-reset-bid'
@@ -530,7 +528,7 @@ override = ((override) ->
         null
 
     override.readCookie = (key) ->
-        
+
         # To prevent the for loop in the first place assign an empty array
         # in case there are no cookies at all. Also prevents odd result when
         # calling $.cookie().
@@ -540,12 +538,12 @@ override = ((override) ->
             parts = cookie.split("=")
             name = decodeURIComponent(parts.shift())
             return parts.join("=") if key? and key is name
-            
+
         null
 
     override.removeCookie = (key, options) ->
         return false if override.readCookie key is null
-        
+
         # Must not alter options, thus extending a fresh object...
         override.writeCookie key, "", $.extend({}, options, expires: -1)
         not override.readCookie key
@@ -555,24 +553,24 @@ override = ((override) ->
             domain: override.tld(window.location.hostname)
         override.removeCookie override.bidCookieKey,
             domain: '.virtusize.com'
-    
+
     ###
     Identifies the current top level domain by a regex. This regex is only
     considering the amount of characters in the domain and will not work
     properly for domains shorter than 3 characters.
-    
+
     The regex is from https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/middleware/cookies.rb
-    
+
     This regular expression is used to split the levels of a domain.
     The top level domain can be any string without a period or
     .**, ***.** style TLDs like co.uk or com.au
-    
+
     www.example.co.uk gives:
     $& => example.co.uk
-    
+
     example.com gives:
     $& => example.com
-    
+
     lots.of.subdomains.example.local gives:
     $& => example.local
     ###
@@ -588,7 +586,7 @@ override = ((override) ->
             image = data.image_url
 
         if $.isArray(image) then image[0] else image
-        
+
 
     override.registerHandlebarsHelpers = ->
         Handlebars.registerHelper 'language_select_box', () ->
@@ -601,7 +599,7 @@ override = ((override) ->
             str += '</select>'
 
             new Handlebars.SafeString str
-            
+
 
         Handlebars.registerHelper 'mobileButtonClass', () ->
             if @mobile then ' active' else ''
@@ -620,4 +618,3 @@ override = ((override) ->
 
     override
 )(override or {})
-
