@@ -1,4 +1,4 @@
-FROM node:4.0
+FROM node:4.3.0
 
 WORKDIR /bookmarklets
 COPY . /bookmarklets
