@@ -14,7 +14,7 @@ override = ((override) ->
         develop: "develop.virtusize.com"
         translations: "translations.virtusize.com"
         api: "api.virtusize.com"
-        www: "www.virtusize.com"
+        japan: "api.virtusize.jp"
 
     override.languages = [
         'default'
@@ -67,7 +67,6 @@ override = ((override) ->
         if url?
             override.envs['custom'] = url
             override.loadIntegrationScript 'custom', false
-
 
     override.injectStyle = ->
         style = $('<style id="virtusize-bookmarklet-styles"></style>')
