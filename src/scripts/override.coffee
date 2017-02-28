@@ -4,7 +4,7 @@ override = ((override) ->
     override.styles = '@@include("styles/override.min.css")'
     override.jQueryCDN = 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'
     override.bootstrapCDN = 'https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'
-    override.snippet = '!function(a,b,c,d,e,f,g){var h,i,j,k;for(a.Virtusize=e,a[e]=a[e]||[],a[e].methods=["setApiKey","setRegion","setLanguage","setWidgetOverlayColor","addWidget","ready","on","setAvailableSizes","setSizeAliases","addOrder","setUserId"],a[e].factory=function(b){return function(){var c;return c=Array.prototype.slice.call(arguments),c.unshift(b),a[e].push(c),a[e]}},k=a[e].methods,i=0,j=k.length;j>i;i++)h=k[i],a[e][h]=a[e].factory(h);a[e].snippetVersion="3.0.2",f=b.createElement(c),g=b.getElementsByTagName(c)[0],f.async=1,f.src=("https:"===a.location.protocol?"https://":"http://")+d,f.id="vs-integration",g.parentNode.insertBefore(f,g)}'
+    override.snippet = '!function(a,b,c,d,e,f,g){var h,i,j,k;for(a.Virtusize=e,a[e]=a[e]||[],a[e].methods=["setApiKey","setRegion","setLanguage","setWidgetOverlayColor","addWidget","ready","on","setAvailableSizes","setSizeAliases","addOrder","addFindByFit","setUserId"],a[e].factory=function(b){return function(){var c;return c=Array.prototype.slice.call(arguments),c.unshift(b),a[e].push(c),a[e]}},k=a[e].methods,i=0,j=k.length;j>i;i++)h=k[i],a[e][h]=a[e].factory(h);a[e].snippetVersion="4.0.0",f=b.createElement(c),g=b.getElementsByTagName(c)[0],f.async=1,f.src=("https:"===a.location.protocol?"https://":"http://")+d,f.id="vs-integration",g.parentNode.insertBefore(f,g)}'
     override.utilIFrameName = "virtusize-util-iframe"
     override.tldRegex = /[^.]*\.([^.]*|..\...|...\...)$/
     override.bidCookieKey = "vs.bid"
@@ -12,9 +12,8 @@ override = ((override) ->
     override.envs =
         staging: "staging.virtusize.com"
         develop: "develop.virtusize.com"
-        translations: "translations.virtusize.com"
-        api: "api.virtusize.com"
         japan: "api.virtusize.jp"
+        api: "api.virtusize.com"
 
     override.languages = [
         'default'
@@ -67,6 +66,7 @@ override = ((override) ->
         if url?
             override.envs['custom'] = url
             override.loadIntegrationScript 'custom', false
+
 
     override.injectStyle = ->
         style = $('<style id="virtusize-bookmarklet-styles"></style>')
@@ -443,8 +443,8 @@ override = ((override) ->
 
         console.log 'Integrating with: ' + override.envs[env]
 
-        script = $('<script type="text/javascript"></script>')
-        script.text override.snippet + '(window,document,"script","' + override.envs[env] + '/integration/v3.source.js","vs");'
+        script = $('<script></script>')
+        script.text override.snippet + '(window,document,"script","' + override.envs[env] + '/integration/v4.source.js","vs");'
         $('head').append script
 
         window[Virtusize].setApiKey(if override.previousVs? then override.previousVs.apiKey else apiKey)

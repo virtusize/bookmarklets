@@ -54,12 +54,12 @@ Then run the container and expose its port on the host:
     docker run -p 9001:9001 -d virtusize/bookmarklets
 
 It will start up the server so you can configure a bookmarklet like the
-following. Replace the DOCKER_MACHINE variable with the `docker-machine ip`:
+following.
 
-    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://DOCKER_MACHINE:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://develop.virtusize.com:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
 
     # Example, if you have a /etc/hosts entry for your machine:
-    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://docker.virtusize.com:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
+    javascript:void((function(){var%20element=document.createElement('script');element.setAttribute('src','http://develop.virtusize.com:9001/override.js');element.setAttribute('id','vs-bookmarklet');document.body.appendChild(element)})())
 
 
 ## Deployment

@@ -1,6 +1,6 @@
 {
   "name": "bookmarklets",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Virtusize Bookmarklets",
   "main": "gruntfile.js",
   "private": true,
