@@ -12,6 +12,9 @@ Use list notation, and following prefixes:
 
 ### NEXT RELEASE
 
+### 0.7.1
+
+- Feature: Updated to integration v4. (ab)
 
 ### 0.7.0
 
