@@ -14,6 +14,8 @@ Use list notation, and following prefixes:
 
 ### 0.7.1
 
+- Feature: Updated to integration v4. (ab)
+
 ### 0.7.0
 
 - Feature: Replaced deprecated environments with develop. (ab)
