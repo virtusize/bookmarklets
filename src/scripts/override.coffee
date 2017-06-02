@@ -13,7 +13,7 @@ override = ((override) ->
         staging: "staging.virtusize.com"
         develop: "develop.virtusize.com"
         japan: "api.virtusize.jp"
-        api: "api.virtusize.com"
+        api: "www.virtusize.com"
 
     override.languages = [
         'default'
